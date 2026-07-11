@@ -1,46 +1,116 @@
+using System;
+
 namespace M320.StateMachines
 {
-    public abstract class State<TContext> 
+    public interface IStateProperties 
     {
-        #region Fields & Properties
+        public bool IsFinished { get; }
 
-        public readonly TContext context;
-        public readonly ITimeSource timeSource;
+        public float StartTime { get; }
+        public float ElapsedTime { get; }
+        public float FixedElapsedTime { get; }
+    }
 
-        public bool isFinished { get; protected set; }
+    public interface IState : IStateProperties
+    {
+        void OnEnter(float startTime);
 
-        public float startTime { get; private set; }
-        public float elapsedTime { get; private set; }
-        public float fixedElapsedTime { get; private set; }
+        void OnUpdate(float deltaTime);
+        void OnFixedUpdate(float fixedDeltaTime);
 
-        public float currentTime => startTime + elapsedTime;
-        public float fixedCurrentTime => startTime + fixedElapsedTime;
+        void OnExit();
+    }
+    public interface IState<TContext> : IStateProperties
+    {
+        void OnEnter(TContext context, float startTime);
+
+        void OnUpdate(TContext context, float deltaTime);
+        void OnFixedUpdate(TContext context, float fixedDeltaTime);
+
+        void OnExit(TContext context);
+    }
+
+    public class StateBase : IStateProperties
+    {
+        #region Properties
+
+        public bool IsFinished { get; protected set; }
+
+        public float StartTime { get; private set; }
+        public float ElapsedTime { get; private set; }
+        public float FixedElapsedTime { get; private set; }
 
         #endregion
 
-        public State(TContext context, ITimeSource timeSource) 
+        #region Methods
+
+        protected void Enter(float startTime)
         {
-            this.context = context;
-            this.timeSource = timeSource;
+            IsFinished = false;
+            StartTime = startTime;
+            ElapsedTime = 0f;
+            FixedElapsedTime = 0;
         }
 
-        public virtual void OnEnter()
+        protected void UpdateElapsedTime(float deltaTime)
         {
-            isFinished = false;
-            startTime = timeSource.Time;
-            elapsedTime = 0f;
-            fixedElapsedTime = 0;
+            ElapsedTime += deltaTime;
+        }
+        protected void FixedUpdateElapsedTime(float fixedDeltaTime)
+        {
+            FixedElapsedTime += fixedDeltaTime;
         }
 
-        public virtual void OnUpdate(float deltaTime) 
-        {
-            elapsedTime += deltaTime;
-        }
-        public virtual void OnFixedUpdate(float fixedDeltaTime)
-        {
-            fixedElapsedTime += fixedDeltaTime;
-        }
+        #endregion
+    }
+
+    public class State : StateBase, IState
+    {
+        public virtual void OnEnter(float startTime) => Enter(startTime);
+
+        public virtual void OnUpdate(float deltaTime) => UpdateElapsedTime(deltaTime);
+        public virtual void OnFixedUpdate(float fixedDeltaTime) => FixedUpdateElapsedTime(fixedDeltaTime);
 
         public virtual void OnExit() { }
+    }
+    public class State<TContext> : StateBase, IState<TContext>
+    {
+        public virtual void OnEnter(TContext context, float startTime) => Enter(startTime);
+
+        public virtual void OnUpdate(TContext context, float deltaTime) => UpdateElapsedTime(deltaTime);
+        public virtual void OnFixedUpdate(TContext context, float fixedDeltaTime) => FixedUpdateElapsedTime(fixedDeltaTime);
+
+        public virtual void OnExit(TContext context) { }
+    }
+
+    public static class StateExtensions
+    {
+        public static float CurrentTime(this IStateProperties state)
+        {
+            return state.StartTime + state.ElapsedTime;
+        }
+        public static float FixedCurrentTime(this IStateProperties state)
+        {
+            return state.StartTime + state.FixedElapsedTime;
+        }
+
+        public static float GetElapsedTime(this IStateProperties state, UpdateMode updateMode)
+        {
+            return updateMode switch
+            {
+                UpdateMode.Update => state.ElapsedTime,
+                UpdateMode.FixedUpdate => state.FixedElapsedTime,
+                _ => throw new ArgumentException("Invalid Update Mode!", nameof(updateMode))
+            };
+        }
+        public static float GetCurrentTime(this IStateProperties state, UpdateMode updateMode)
+        {
+            return updateMode switch
+            {
+                UpdateMode.Update => CurrentTime(state),
+                UpdateMode.FixedUpdate => FixedCurrentTime(state),
+                _ => throw new ArgumentException("Invalid Update Mode!", nameof(updateMode))
+            };
+        }
     }
 }

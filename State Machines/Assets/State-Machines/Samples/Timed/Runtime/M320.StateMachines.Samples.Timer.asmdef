@@ -1,0 +1,17 @@
+{
+    "name": "M320.StateMachines.Samples.Timer",
+    "rootNamespace": "M320.StateMachines.Samples.Timer",
+    "references": [
+        "GUID:0e13911e977f8c6499a77ad0b9627b6a",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

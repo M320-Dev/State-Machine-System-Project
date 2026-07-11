@@ -1,32 +1,71 @@
+using UnityEngine;
+
 namespace M320.StateMachines
 {
-    public abstract class StateMachineCore<TContext>
+    public abstract class StateMachineCore : MonoBehaviour
     {
-        public readonly StateMachine<TContext> machine;
+        #region Properties
 
-        public StateMachineCore()
-        {
-            machine = new();
-        }
-        public StateMachineCore(State<TContext> initialState) 
-        {
-            machine = new(initialState);
-        }
+        protected abstract IState InitialState { get; }
+        protected StateMachine Machine { get; private set; }
+        protected IState CurrentState => Machine.CurrentState;
 
-        public void Update(float deltaTime) 
-        {
-            OnUpdate(deltaTime);
+        #endregion
 
-            machine.currentState?.OnUpdate(deltaTime);
-        }
-        public void FixedUpdate(float fixedDeltaTime)
+        private void Awake()
         {
-            OnFixedUpdate(fixedDeltaTime);
-
-            machine.currentState?.OnFixedUpdate(fixedDeltaTime);
+            Initialize();
+            Machine = new(InitialState, 0f);
         }
 
-        protected virtual void OnUpdate(float deltaTime) { }
-        protected virtual void OnFixedUpdate(float fixedDeltaTime) { }
+        protected virtual void Initialize() { }
+
+        protected virtual void Update()
+        {
+            Machine.Update(Time.deltaTime);
+        }
+        protected virtual void FixedUpdate()
+        {
+            Machine.FixedUpdate(Time.fixedDeltaTime);
+        }
+
+        protected void ChangeState(IState state, bool forceChange = false)
+        {
+            Machine.ChangeState(state, Time.time, forceChange);
+        }
+    }
+
+    public abstract class StateMachineCore<TContext> : MonoBehaviour
+    {
+        #region Properties
+
+        protected abstract TContext Context { get; }
+        protected abstract IState<TContext> InitialState { get; }
+        protected StateMachine<TContext> Machine { get; private set; }
+        protected IState<TContext> CurrentState => Machine.CurrentState;
+
+        #endregion
+
+        private void Awake()
+        {
+            Initialize();
+            Machine = new(Context, InitialState, 0f);
+        }
+
+        protected virtual void Initialize() { }
+
+        protected virtual void Update()
+        {
+            Machine.Update(Time.deltaTime);
+        }
+        protected virtual void FixedUpdate()
+        {
+            Machine.FixedUpdate(Time.fixedDeltaTime);
+        }
+
+        protected void ChangeState(IState<TContext> state, bool forceChange = false) 
+        {
+            Machine.ChangeState(state, Time.time, forceChange);
+        }
     }
 }
