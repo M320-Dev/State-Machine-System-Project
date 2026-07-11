@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,19 +6,44 @@ namespace M320.StateMachines.Samples.Platformer2D
 {
     public sealed class TimedCore : StateMachineCore
     {
+        #region Inspector Fields
+
         [SerializeField, Min(0f)] private float m_timedDuration = 1f;
         [SerializeField] private UpdateMode m_mode = UpdateMode.Update;
 
-        protected override IState InitialState => _idleState;
+        #endregion
+
+        #region States
 
         private State _idleState;
         private TimedState _timedState;
+
+        #endregion
+
+        #region Properties
+
+        protected override State InitialState => _idleState;
+        protected override object Context => null;
+
+        #endregion
+
+        #region Initialization
 
         protected override void Initialize()
         {
             _idleState = new();
             _timedState = new(m_timedDuration, m_mode);
         }
+        protected override IReadOnlyList<State> ConstructStates()
+        {
+            return new State[]
+            {
+                _idleState,
+                _timedState
+            };
+        }
+
+        #endregion
 
         protected override void Update()
         {

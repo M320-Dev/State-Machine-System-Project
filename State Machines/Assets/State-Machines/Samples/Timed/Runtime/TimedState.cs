@@ -4,7 +4,8 @@ namespace M320.StateMachines.Samples.Platformer2D
 {
     public sealed class TimedState : StateMachines.TimedState
     {
-        public TimedState(float Duration, UpdateMode mode) : base(Duration, mode) { }
+        public TimedState(float Duration, UpdateMode mode) 
+            : base(Duration, mode) { }
 
         public override void OnEnter(float startTime)
         {
