@@ -40,10 +40,20 @@ namespace M320.StateMachines
 
         #endregion
 
-        public State(string name = "") 
+        #region Constructors
+
+        public State(StateName name) 
         {
-            Name = string.IsNullOrWhiteSpace(name) ? GetType().Name : name;
+            Name = string.IsNullOrWhiteSpace(name) ? TypeName() : name;
         }
+        public State() 
+        {
+            Name = TypeName();
+        }
+
+        private string TypeName() => GetType().Name;
+
+        #endregion
 
         #region Methods
 

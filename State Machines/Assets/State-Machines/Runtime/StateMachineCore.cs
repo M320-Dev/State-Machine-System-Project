@@ -30,21 +30,21 @@ namespace M320.StateMachines
             }
         }
 
+        #region Initialization
+
         protected virtual void Awake()
         {
             Initialize();
+            InitializationUtility.Initialize(ConstructStates(), Context, StateDictionary);
             Machine = new(InitialState);
         }
 
-        protected virtual void Initialize() 
-        {
-            foreach (var state in ConstructStates())
-            {
-                state.Context = Context;
-                StateDictionary.Add(state);
-            }
-        }
+        protected virtual void Initialize() { }
         protected abstract IReadOnlyList<State> ConstructStates();
+
+        #endregion
+
+        #region Update
 
         protected virtual void Update()
         {
@@ -55,10 +55,20 @@ namespace M320.StateMachines
             Machine.FixedUpdate(Time.fixedDeltaTime);
         }
 
+        #endregion
+
+        #region Change State
+
+        protected void ChangeState(StateName stateName, bool forceChange = false)
+        {
+            ChangeState(StateDictionary[stateName], forceChange);
+        }
         protected void ChangeState(State state, bool forceChange = false)
         {
             Machine.ChangeState(state, Time.time, forceChange);
         }
+
+        #endregion
 
         public List<State> GetCurrentStateBranch() 
         {

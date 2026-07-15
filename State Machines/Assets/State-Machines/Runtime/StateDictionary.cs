@@ -6,7 +6,7 @@ namespace M320.StateMachines
     {
         private readonly Dictionary<string, State> _dictionary = new();
 
-        public State this[string name] => _dictionary[name];
+        public State this[StateName name] => _dictionary[name];
 
         public void Add(State state)
         {

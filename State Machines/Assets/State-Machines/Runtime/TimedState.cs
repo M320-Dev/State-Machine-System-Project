@@ -5,11 +5,13 @@ namespace M320.StateMachines
         public float Duration { get; }
         public UpdateMode Mode { get; }
 
-        public TimedState(float duration, UpdateMode mode)
+        public TimedState(StateName name, float duration, UpdateMode mode) : base(name)
         {
             Duration = duration;
             Mode = mode;
         }
+        public TimedState(float duration, UpdateMode mode)
+            : this("", duration, mode) { }
 
         public float NormalizedElapsedTime => ElapsedTime / Duration;
         public float NormalizedFixedElapsedTime => FixedElapsedTime / Duration;

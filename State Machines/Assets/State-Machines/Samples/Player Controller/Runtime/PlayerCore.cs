@@ -5,6 +5,12 @@ using UnityEngine.InputSystem;
 
 namespace M320.StateMachines.Samples.PlayerController
 {
+    public enum PlayerState 
+    {
+        Grounded,
+        Airbone
+    }
+
     public sealed class PlayerCore : StateMachineCore
     {
         #region Inspector Fields
@@ -24,6 +30,9 @@ namespace M320.StateMachines.Samples.PlayerController
         [SerializeField, Range(0.02f, 0.05f)] private float m_groundCheckDistance = 0.03f;
         [SerializeField, Range(0f, 0.1f)] private float m_groundCheckTolerance = 0.05f;
 
+        [Header("Initial State")]
+        [SerializeField] private PlayerState m_initialState = PlayerState.Grounded;
+
         #endregion
 
         #region Cache Fields & Properties
@@ -34,10 +43,7 @@ namespace M320.StateMachines.Samples.PlayerController
 
         #endregion
 
-        private readonly GroundedState _groundedState = new("Grounded");
-        private readonly AirboneState _airboneState = new("Airbone");
-
-        protected override State InitialState => _groundedState;
+        protected override State InitialState => StateDictionary[m_initialState];
 
         protected override object Context => this;
 
@@ -49,16 +55,16 @@ namespace M320.StateMachines.Samples.PlayerController
 
             CheckIfGrounded();
 
-            if (_isGrounded) ChangeState(_groundedState, true);
-            else ChangeState(_airboneState, true);
+            if (_isGrounded) ChangeState(PlayerState.Grounded, true);
+            else ChangeState(PlayerState.Airbone, true);
         }
 
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[] 
             {
-                _groundedState,
-                _airboneState
+                new GroundedState(PlayerState.Grounded),
+                new AirboneState(PlayerState.Airbone)
             };
         }
 
@@ -95,7 +101,8 @@ namespace M320.StateMachines.Samples.PlayerController
     {
         private PlayerCore _playerCore;
 
-        public GroundedState(string name = "") : base(name) { }
+        public GroundedState(StateName name) : base(name) { }
+        public GroundedState() : base() { }
 
         public override void OnEnter(float startTime)
         {
@@ -123,7 +130,8 @@ namespace M320.StateMachines.Samples.PlayerController
     {
         private PlayerCore _playerCore;
 
-        public AirboneState(string name = "") : base(name) { }
+        public AirboneState(StateName name) : base(name) { }
+        public AirboneState() : base() { }
 
         public override void OnEnter(float startTime)
         {

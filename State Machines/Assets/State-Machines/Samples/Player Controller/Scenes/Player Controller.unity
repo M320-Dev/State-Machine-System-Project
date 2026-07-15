@@ -830,6 +830,7 @@ MonoBehaviour:
     m_Bits: 64
   m_groundCheckDistance: 0.03
   m_groundCheckTolerance: 0.05
+  m_initialState: 1
 --- !u!114 &1946621159
 MonoBehaviour:
   m_ObjectHideFlags: 0

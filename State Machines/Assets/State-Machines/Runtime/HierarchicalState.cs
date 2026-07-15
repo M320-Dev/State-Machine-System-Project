@@ -20,29 +20,34 @@ namespace M320.StateMachines
             }
         }
 
-        public HierarchicalState(State initialState, float startTime = 0f)
+        #region Constructors
+
+        public HierarchicalState(StateName name, State initialState, float startTime = 0f) : base(name)
         {
             Initialize();
+            InitializationUtility.Initialize(ConstructStates(), Context, StateDictionary);
             Machine = new(initialState, startTime);
         }
+        public HierarchicalState(State initialState, float startTime = 0f) 
+            : this("", initialState, startTime) { }
 
-        protected virtual void Initialize()
-        {
-            foreach (var state in ConstructStates())
-            {
-                state.Context = Context;
-                StateDictionary.Add(state);
-            }
-        }
+        #endregion
+
+        #region Initialization
+
+        protected virtual void Initialize() { }
         protected abstract IReadOnlyList<State> ConstructStates();
+
+        #endregion
+
+        #region Properties
 
         public State PreviousState => Machine?.PreviousState;
         public State CurrentState => Machine?.CurrentState;
 
-        public void ChangeState(State state, float startTime = 0f, bool forceChange = false)
-        {
-            Machine.ChangeState(state, startTime, forceChange);
-        }
+        #endregion
+
+        #region Update
 
         public override void OnUpdate(float deltaTime)
         {
@@ -54,5 +59,20 @@ namespace M320.StateMachines
             base.OnFixedUpdate(fixedDeltaTime);
             Machine.FixedUpdate(fixedDeltaTime);
         }
+
+        #endregion
+
+        #region Change State
+
+        protected void ChangeState(StateName stateName, float startTime = 0f, bool forceChange = false)
+        {
+            ChangeState(StateDictionary[stateName], startTime, forceChange);
+        }
+        public void ChangeState(State state, float startTime = 0f, bool forceChange = false)
+        {
+            Machine.ChangeState(state, startTime, forceChange);
+        }
+
+        #endregion
     }
 }

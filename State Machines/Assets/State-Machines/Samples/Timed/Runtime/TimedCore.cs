@@ -15,7 +15,7 @@ namespace M320.StateMachines.Samples.Platformer2D
 
         #region States
 
-        private State _idleState;
+        private IdleState _idleState;
         private TimedState _timedState;
 
         #endregion
@@ -31,8 +31,8 @@ namespace M320.StateMachines.Samples.Platformer2D
 
         protected override void Initialize()
         {
-            _idleState = new();
-            _timedState = new(m_timedDuration, m_mode);
+            _idleState = new("Idle");
+            _timedState = new("Timed", m_timedDuration, m_mode);
         }
         protected override IReadOnlyList<State> ConstructStates()
         {
