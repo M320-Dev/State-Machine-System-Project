@@ -9,12 +9,12 @@ namespace M320.StateMachines
 
         #region Properties
 
+        protected abstract object Context { get; }
+        protected abstract State InitialState { get; }
+
         protected StateMachine Machine { get; private set; }
         public State PreviousState => Machine?.PreviousState;
         public State CurrentState => Machine?.CurrentState;
-
-        protected abstract State InitialState { get; }
-        protected abstract object Context { get; }
 
         #endregion
 

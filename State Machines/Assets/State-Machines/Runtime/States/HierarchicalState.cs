@@ -6,7 +6,8 @@ namespace M320.StateMachines
     {
         protected readonly StateDictionary StateDictionary = new();
 
-        public readonly StateMachine Machine;
+        protected readonly StateMachine Machine;
+
 
         public event ChangeHandler<State> StateChanged 
         {
@@ -22,14 +23,14 @@ namespace M320.StateMachines
 
         #region Constructors
 
-        public HierarchicalState(StateName name, State initialState, float startTime = 0f) : base(name)
+        public HierarchicalState(StateName name, StateName initialStateName, float startTime = 0f) : base(name)
         {
             Initialize();
             InitializationUtility.Initialize(ConstructStates(), Context, StateDictionary);
-            Machine = new(initialState, startTime);
+            Machine = new(StateDictionary[initialStateName], startTime);
         }
-        public HierarchicalState(State initialState, float startTime = 0f) 
-            : this("", initialState, startTime) { }
+        public HierarchicalState(StateName initialStateName, float startTime = 0f) 
+            : this("", initialStateName, startTime) { }
 
         #endregion
 

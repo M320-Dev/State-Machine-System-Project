@@ -1,6 +1,6 @@
 namespace M320.StateMachines
 {
-    public class TimedState : State
+    public abstract class TimedState : State
     {
         public float Duration { get; }
         public UpdateMode Mode { get; }

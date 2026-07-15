@@ -5,14 +5,14 @@ using UnityEngine.InputSystem;
 
 namespace M320.StateMachines.Samples.PlayerController
 {
-    public enum PlayerState 
-    {
-        Grounded,
-        Airbone
-    }
-
     public sealed class PlayerCore : StateMachineCore
     {
+        public enum States
+        {
+            Grounded,
+            Airbone
+        }
+
         #region Inspector Fields
 
         [Header("Components")]
@@ -31,14 +31,22 @@ namespace M320.StateMachines.Samples.PlayerController
         [SerializeField, Range(0f, 0.1f)] private float m_groundCheckTolerance = 0.05f;
 
         [Header("Initial State")]
-        [SerializeField] private PlayerState m_initialState = PlayerState.Grounded;
+        [SerializeField] private States m_initialState = States.Grounded;
+
+        [Header("Initial State - Grounded")]
+        [SerializeField] private GroundedState.States m_initialStateGrounded = GroundedState.States.Idle;
 
         #endregion
 
         #region Cache Fields & Properties
 
+        new public BoxCollider2D collider => m_collider;
+        new public Rigidbody2D rigidbody2D => m_rigidbody2D;
+
         private Keyboard _keyboard;
+
         private bool _isGrounded;
+
         private readonly RaycastHit2D[] _oneHitBuffer = new RaycastHit2D[1];
 
         #endregion
@@ -55,16 +63,16 @@ namespace M320.StateMachines.Samples.PlayerController
 
             CheckIfGrounded();
 
-            if (_isGrounded) ChangeState(PlayerState.Grounded, true);
-            else ChangeState(PlayerState.Airbone, true);
+            if (_isGrounded) ChangeState(States.Grounded, true);
+            else ChangeState(States.Airbone, true);
         }
 
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[] 
             {
-                new GroundedState(PlayerState.Grounded),
-                new AirboneState(PlayerState.Airbone)
+                new GroundedState(States.Grounded, m_initialStateGrounded),
+                new AirboneState(States.Airbone)
             };
         }
 
@@ -94,57 +102,6 @@ namespace M320.StateMachines.Samples.PlayerController
             {
                 m_rigidbody2D.linearVelocityY = m_jumpSpeed;
             }
-        }
-    }
-
-    public sealed class GroundedState : State
-    {
-        private PlayerCore _playerCore;
-
-        public GroundedState(StateName name) : base(name) { }
-        public GroundedState() : base() { }
-
-        public override void OnEnter(float startTime)
-        {
-            base.OnEnter(startTime);
-
-            _playerCore = (PlayerCore)Context;
-        }
-
-        public override void OnUpdate(float deltaTime)
-        {
-            base.OnUpdate(deltaTime);
-
-            _playerCore.TryJump();
-        }
-
-        public override void OnFixedUpdate(float fixedDeltaTime)
-        {
-            base.OnFixedUpdate(fixedDeltaTime);
-
-            _playerCore.TryMoveX();
-        }
-    }
-
-    public sealed class AirboneState : State
-    {
-        private PlayerCore _playerCore;
-
-        public AirboneState(StateName name) : base(name) { }
-        public AirboneState() : base() { }
-
-        public override void OnEnter(float startTime)
-        {
-            base.OnEnter(startTime);
-
-            _playerCore = (PlayerCore)Context;
-        }
-
-        public override void OnFixedUpdate(float fixedDeltaTime)
-        {
-            base.OnFixedUpdate(fixedDeltaTime);
-
-            _playerCore.TryMoveX();
         }
     }
 }

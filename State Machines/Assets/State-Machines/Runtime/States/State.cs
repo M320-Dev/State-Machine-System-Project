@@ -2,11 +2,11 @@ using System;
 
 namespace M320.StateMachines
 {
-    public abstract class State 
+    public abstract class State
     {
         #region Properties
 
-        public readonly string Name;
+        public string Name { get; }
 
         public object Context { get; internal set; }
 
@@ -42,11 +42,11 @@ namespace M320.StateMachines
 
         #region Constructors
 
-        public State(StateName name) 
+        public State(StateName name)
         {
             Name = string.IsNullOrWhiteSpace(name) ? TypeName() : name;
         }
-        public State() 
+        public State()
         {
             Name = TypeName();
         }
@@ -57,7 +57,7 @@ namespace M320.StateMachines
 
         #region Methods
 
-        public virtual void OnEnter(float startTime) 
+        public virtual void OnEnter(float startTime)
         {
             IsFinished = false;
             StartTime = startTime;
@@ -65,11 +65,11 @@ namespace M320.StateMachines
             FixedElapsedTime = 0;
         }
 
-        public virtual void OnUpdate(float deltaTime) 
+        public virtual void OnUpdate(float deltaTime)
         {
             ElapsedTime += deltaTime;
         }
-        public virtual void OnFixedUpdate(float fixedDeltaTime) 
+        public virtual void OnFixedUpdate(float fixedDeltaTime)
         {
             FixedElapsedTime += fixedDeltaTime;
         }
