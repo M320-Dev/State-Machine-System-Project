@@ -843,6 +843,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: M320.StateMachines::M320.StateMachines.StateMachineCoreDebugger
   m_core: {fileID: 1946621158}
+  m_separator: ' => '
+  m_separatorColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_stateNameColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

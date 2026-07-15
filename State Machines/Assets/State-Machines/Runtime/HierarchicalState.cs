@@ -4,7 +4,17 @@ namespace M320.StateMachines
     {
         public readonly StateMachine Machine;
 
-        public event ChangeHandler<State> StateChanged;
+        public event ChangeHandler<State> StateChanged 
+        {
+            add 
+            {
+                if (Machine != null) Machine.StateChanged += value;
+            }
+            remove
+            {
+                if (Machine != null) Machine.StateChanged -= value;
+            }
+        }
 
         public HierarchicalState(State initialState, float startTime = 0f)
         {
