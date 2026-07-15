@@ -633,6 +633,7 @@ GameObject:
   - component: {fileID: 1946621156}
   - component: {fileID: 1946621152}
   - component: {fileID: 1946621158}
+  - component: {fileID: 1946621159}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -829,6 +830,19 @@ MonoBehaviour:
     m_Bits: 64
   m_groundCheckDistance: 0.03
   m_groundCheckTolerance: 0.05
+--- !u!114 &1946621159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946621151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa99421e492cd44183c82ac1fe2d677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: M320.StateMachines::M320.StateMachines.StateMachineCoreDebugger
+  m_core: {fileID: 1946621158}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

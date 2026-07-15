@@ -6,6 +6,8 @@ namespace M320.StateMachines
     {
         #region Properties
 
+        public readonly string Name;
+
         public object Context { get; internal set; }
 
         public bool IsFinished { get; protected set; }
@@ -37,6 +39,11 @@ namespace M320.StateMachines
         }
 
         #endregion
+
+        public State(string name = "") 
+        {
+            Name = string.IsNullOrWhiteSpace(name) ? GetType().Name : name;
+        }
 
         #region Methods
 

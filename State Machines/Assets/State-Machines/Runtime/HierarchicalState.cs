@@ -1,15 +1,18 @@
 namespace M320.StateMachines
 {
-    public class HierarchicalState : State
+    public class HierarchicalState : State, IStateMachine
     {
         public readonly StateMachine Machine;
+
+        public event ChangeHandler<State> StateChanged;
 
         public HierarchicalState(State initialState, float startTime = 0f)
         {
             Machine = new(initialState, startTime);
         }
 
-        public State CurrentState => Machine.CurrentState;
+        public State PreviousState => Machine?.PreviousState;
+        public State CurrentState => Machine?.CurrentState;
 
         public void ChangeState(State state, float startTime = 0f, bool forceChange = false)
         {

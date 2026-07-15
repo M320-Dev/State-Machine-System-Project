@@ -2,13 +2,25 @@ using System;
 
 namespace M320.StateMachines
 {
-    public sealed class StateMachine
+    public interface IStateMachine
     {
+        State PreviousState { get; }
+        State CurrentState { get; }
+
+        event ChangeHandler<State> StateChanged;
+    }
+
+    public sealed class StateMachine : IStateMachine
+    {
+        public State PreviousState { get; private set; }
         public State CurrentState { get; private set; }
+
+        public event ChangeHandler<State> StateChanged;
 
         public StateMachine(State initialState, float startTime = 0f)
         {
             CurrentState = initialState ?? throw new ArgumentNullException(nameof(initialState));
+            PreviousState = CurrentState;
             initialState?.OnEnter(startTime);
         }
 
@@ -21,6 +33,10 @@ namespace M320.StateMachines
             CurrentState.OnExit();
             CurrentState = state;
             CurrentState.OnEnter(startTime);
+
+            StateChanged?.Invoke(PreviousState, CurrentState);
+
+            PreviousState = CurrentState;
         }
 
         public void Update(float deltaTime)

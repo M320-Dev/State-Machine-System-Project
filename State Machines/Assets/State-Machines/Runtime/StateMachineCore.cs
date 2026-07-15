@@ -3,18 +3,31 @@ using UnityEngine;
 
 namespace M320.StateMachines
 {
-    public abstract class StateMachineCore : MonoBehaviour
+    public abstract class StateMachineCore : MonoBehaviour, IStateMachine
     {
         #region Properties
 
         protected StateMachine Machine { get; private set; }
-        protected State CurrentState => Machine.CurrentState;
+        public State PreviousState => Machine?.PreviousState;
+        public State CurrentState => Machine?.CurrentState;
 
         protected abstract State InitialState { get; }
         protected abstract object Context { get; }
         protected IReadOnlyList<State> States { get; private set; }
 
         #endregion
+
+        public event ChangeHandler<State> StateChanged 
+        {
+            add
+            {
+                if (Machine != null) Machine.StateChanged += value;
+            }
+            remove
+            {
+                if (Machine != null) Machine.StateChanged -= value;
+            }
+        }
 
         protected virtual void Awake()
         {
@@ -44,6 +57,21 @@ namespace M320.StateMachines
         protected void ChangeState(State state, bool forceChange = false)
         {
             Machine.ChangeState(state, Time.time, forceChange);
+        }
+
+        public List<State> GetCurrentStateBranch() 
+        {
+            List<State> stateBranch = new();
+            State state = CurrentState;
+            while (state != null) 
+            {
+                stateBranch.Add(state);
+
+                if (state is not HierarchicalState hierarchicalState) break;
+
+                state = hierarchicalState.CurrentState;
+            }
+            return stateBranch;   
         }
     }
 }

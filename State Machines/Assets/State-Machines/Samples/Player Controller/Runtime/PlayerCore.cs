@@ -34,8 +34,8 @@ namespace M320.StateMachines.Samples.PlayerController
 
         #endregion
 
-        private readonly GroundedState _groundedState = new();
-        private readonly AirboneState _airboneState = new();
+        private readonly GroundedState _groundedState = new("Grounded");
+        private readonly AirboneState _airboneState = new("Airbone");
 
         protected override State InitialState => _groundedState;
 
@@ -95,6 +95,8 @@ namespace M320.StateMachines.Samples.PlayerController
     {
         private PlayerCore _playerCore;
 
+        public GroundedState(string name = "") : base(name) { }
+
         public override void OnEnter(float startTime)
         {
             base.OnEnter(startTime);
@@ -120,6 +122,8 @@ namespace M320.StateMachines.Samples.PlayerController
     public sealed class AirboneState : State
     {
         private PlayerCore _playerCore;
+
+        public AirboneState(string name = "") : base(name) { }
 
         public override void OnEnter(float startTime)
         {
