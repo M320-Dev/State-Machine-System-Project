@@ -49,7 +49,7 @@ namespace M320.StateMachines.Samples.PlayerController
 
             CheckIfGrounded();
 
-            if (!_isGrounded) ChangeState(_groundedState, true);
+            if (_isGrounded) ChangeState(_groundedState, true);
             else ChangeState(_airboneState, true);
         }
 
@@ -84,7 +84,10 @@ namespace M320.StateMachines.Samples.PlayerController
         {
             if (_keyboard == null) return;
 
-            if (_keyboard.spaceKey.wasPressedThisFrame) m_rigidbody2D.linearVelocityY = m_jumpSpeed;
+            if (_keyboard.spaceKey.wasPressedThisFrame)
+            {
+                m_rigidbody2D.linearVelocityY = m_jumpSpeed;
+            }
         }
     }
 
@@ -99,12 +102,18 @@ namespace M320.StateMachines.Samples.PlayerController
             _playerCore = (PlayerCore)Context;
         }
 
+        public override void OnUpdate(float deltaTime)
+        {
+            base.OnUpdate(deltaTime);
+
+            _playerCore.TryJump();
+        }
+
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
             _playerCore.TryMoveX();
-            _playerCore.TryJump();
         }
     }
 
