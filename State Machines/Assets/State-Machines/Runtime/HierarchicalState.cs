@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+
 namespace M320.StateMachines
 {
-    public class HierarchicalState : State, IStateMachine
+    public abstract class HierarchicalState : State, IStateMachine
     {
+        protected readonly StateDictionary StateDictionary = new();
+
         public readonly StateMachine Machine;
 
         public event ChangeHandler<State> StateChanged 
@@ -18,8 +22,19 @@ namespace M320.StateMachines
 
         public HierarchicalState(State initialState, float startTime = 0f)
         {
+            Initialize();
             Machine = new(initialState, startTime);
         }
+
+        protected virtual void Initialize()
+        {
+            foreach (var state in ConstructStates())
+            {
+                state.Context = Context;
+                StateDictionary.Add(state);
+            }
+        }
+        protected abstract IReadOnlyList<State> ConstructStates();
 
         public State PreviousState => Machine?.PreviousState;
         public State CurrentState => Machine?.CurrentState;

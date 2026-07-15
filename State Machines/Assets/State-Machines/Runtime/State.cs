@@ -2,7 +2,7 @@ using System;
 
 namespace M320.StateMachines
 {
-    public class State 
+    public abstract class State 
     {
         #region Properties
 

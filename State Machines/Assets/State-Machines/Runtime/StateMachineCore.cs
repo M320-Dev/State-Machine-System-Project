@@ -5,6 +5,8 @@ namespace M320.StateMachines
 {
     public abstract class StateMachineCore : MonoBehaviour, IStateMachine
     {
+        protected readonly StateDictionary StateDictionary = new();
+
         #region Properties
 
         protected StateMachine Machine { get; private set; }
@@ -13,7 +15,6 @@ namespace M320.StateMachines
 
         protected abstract State InitialState { get; }
         protected abstract object Context { get; }
-        protected IReadOnlyList<State> States { get; private set; }
 
         #endregion
 
@@ -37,10 +38,10 @@ namespace M320.StateMachines
 
         protected virtual void Initialize() 
         {
-            States = ConstructStates();
-            foreach (var state in States)
+            foreach (var state in ConstructStates())
             {
                 state.Context = Context;
+                StateDictionary.Add(state);
             }
         }
         protected abstract IReadOnlyList<State> ConstructStates();
