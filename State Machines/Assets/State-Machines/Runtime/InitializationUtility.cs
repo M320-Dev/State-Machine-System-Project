@@ -4,13 +4,25 @@ namespace M320.StateMachines
 {
     public static class InitializationUtility
     {
-        public static void SetupStates(IReadOnlyList<State> states, object context, StateDictionary stateDictionary)
+        public static void SetupStates(IReadOnlyList<State> states, object context, StateDictionary stateDictionary, HierarchicalState parentState = null)
         {
             foreach (var state in states)
             {
-                state.SetupContext(context);
+                state.Parent = parentState;
                 stateDictionary.Add(state);
+                state.SetupContext(context);
             }
+        }
+
+        public static void SetupInitialStateBranch(List<HierarchicalState> ancestryBranch, State leaf) 
+        {
+            var ancestor = ancestryBranch[0];
+            for (int i = 1; i < ancestryBranch.Count; i++)
+            {
+                ancestor.SetInitialState(ancestryBranch[i]);
+                ancestor = ancestryBranch[i];
+            }
+            ancestor.SetInitialState(leaf);
         }
     }
 }

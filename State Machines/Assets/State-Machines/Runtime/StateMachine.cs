@@ -17,20 +17,29 @@ namespace M320.StateMachines
 
         public event ChangeHandler<State> StateChanged;
 
-        public StateMachine(State initialState)
+        public StateMachine(State initialState = null)
         {
+            CurrentState = initialState;
+            PreviousState = CurrentState;
+            CurrentState?.OnEnter();
+        }
+
+        public void SetInitialState(State initialState) 
+        {
+            if (CurrentState != null) throw new InvalidOperationException("An initial state was already set!");
+
             CurrentState = initialState ?? throw new ArgumentNullException(nameof(initialState));
             PreviousState = CurrentState;
-            initialState?.OnEnter();
+            CurrentState.OnEnter();
         }
 
         public void ChangeState(State state, bool forceChange = false)
         {
             if (state == null || state == CurrentState) return;
 
-            if (!forceChange && !CurrentState.IsFinished) return;
+            if (!forceChange && CurrentState != null && !CurrentState.IsFinished) return;
 
-            CurrentState.OnExit();
+            CurrentState?.OnExit();
             CurrentState = state;
             CurrentState.OnEnter();
 
@@ -41,11 +50,11 @@ namespace M320.StateMachines
 
         public void Update(float deltaTime)
         {
-            CurrentState.OnUpdate(deltaTime);
+            CurrentState?.OnUpdate(deltaTime);
         }
         public void FixedUpdate(float fixedDeltaTime)
         {
-            CurrentState.OnFixedUpdate(fixedDeltaTime);
+            CurrentState?.OnFixedUpdate(fixedDeltaTime);
         }
     }
 }

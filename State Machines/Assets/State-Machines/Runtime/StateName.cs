@@ -11,7 +11,9 @@ namespace M320.StateMachines
             _value = value;
         }
 
-        public static StateName Empty = new("");
+        public bool IsNullOrWhiteSpace => string.IsNullOrWhiteSpace(_value);
+        
+        public static StateName Empty = new(string.Empty);
 
         public static implicit operator string(StateName name) => name._value;
         public static implicit operator StateName(string value) => new(value);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace M320.StateMachines
 {
     public abstract class StateMachineCoreBase : MonoBehaviour, IStateMachine
     {
+        [SerializeField] private string m_initialLeafState;
+
         protected readonly StateDictionary StateDictionary = new();
 
         public event ChangeHandler<State> StateChanged
@@ -21,7 +24,7 @@ namespace M320.StateMachines
 
         #region Properties
 
-        protected abstract State InitialState { get; }
+        public IReadOnlyCollection<State> States => StateDictionary.States;
 
         protected StateMachine Machine { get; private set; }
         public State PreviousState => Machine?.PreviousState;
@@ -33,11 +36,14 @@ namespace M320.StateMachines
 
         protected virtual void Awake()
         {
-            Initialize();
-            Machine = new(InitialState);
+            State initialState = Initialize();
+            Machine = new(initialState);
         }
 
-        protected virtual void Initialize() { }
+        /// <returns>
+        /// Initial State
+        /// </returns>
+        protected abstract State Initialize();
 
         #endregion
 
@@ -67,6 +73,42 @@ namespace M320.StateMachines
 
         #endregion
 
+        protected (List<HierarchicalState> ancestryBranch, State leaf) GetInitialStateBranch()
+        {
+            State foundState = null;
+
+            foreach (var state in States)
+            {
+                Helper(state);
+            }
+
+            if (foundState == null)
+            {
+                throw new InvalidOperationException(
+                    "Initial State Branch not found! " +
+                    "The initial state must be a leaf and must exist!");
+            }
+
+            return (foundState.GetAncestryBranch(), foundState);
+
+            void Helper(State state)
+            {
+                if (foundState != null) return;
+
+                if (state is not HierarchicalState hierarchicalState)
+                {
+                    if (state.Name == m_initialLeafState) foundState = state;
+
+                    return;
+                }
+
+                foreach (var _state in hierarchicalState.States)
+                {
+                    Helper(_state);
+                }
+            }
+        }
+
         public List<State> GetCurrentStateBranch()
         {
             List<State> stateBranch = new();
@@ -88,9 +130,14 @@ namespace M320.StateMachines
 
         #region Initialization
 
-        protected override void Initialize()
+        protected override State Initialize()
         {
             InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary);
+
+            var (ancestryBranch, leaf) = GetInitialStateBranch();
+            InitializationUtility.SetupInitialStateBranch(ancestryBranch, leaf);
+
+            return ancestryBranch.Count > 0 ? ancestryBranch[0] : leaf;
         }
 
         protected abstract IReadOnlyList<State> ConstructStates();

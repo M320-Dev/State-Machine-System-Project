@@ -8,6 +8,8 @@ namespace M320.StateMachines
 
         public State this[StateName name] => _dictionary[name];
 
+        public IReadOnlyCollection<State> States => _dictionary.Values;
+
         public void Add(State state)
         {
             _dictionary.Add(state.Name, state);

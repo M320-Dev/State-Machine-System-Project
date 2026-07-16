@@ -6,6 +6,12 @@ namespace M320.StateMachines.Samples.Platformer2D
 {
     public sealed class TimedCore : ContextlessStateMachineCore
     {
+        public enum StateEnum 
+        {
+            Idle,
+            Timed
+        }
+
         #region Inspector Fields
 
         [SerializeField, Min(0f)] private float m_timedDuration = 1f;
@@ -13,32 +19,14 @@ namespace M320.StateMachines.Samples.Platformer2D
 
         #endregion
 
-        #region States
-
-        private IdleState _idleState;
-        private TimedState _timedState;
-
-        #endregion
-
-        #region Properties
-
-        protected override State InitialState => _idleState;
-
-        #endregion
-
         #region Initialization
 
-        protected override void Initialize()
-        {
-            _idleState = new("Idle");
-            _timedState = new("Timed", m_timedDuration, m_mode);
-        }
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                _idleState,
-                _timedState
+                new(StateEnum.Idle),
+                new TimedState(StateEnum.Timed, m_timedDuration, m_mode)
             };
         }
 
@@ -50,22 +38,20 @@ namespace M320.StateMachines.Samples.Platformer2D
 
             Mouse mouse = Mouse.current;
 
-            if (CurrentState == _idleState)
+            if (CurrentState.IsNamed(StateEnum.Idle))
             {
                 Debug.Log("Idle");
 
                 if (mouse == null) return;
                 if (!mouse.leftButton.wasPressedThisFrame) return;
 
-                ChangeState(_timedState);
+                ChangeState(StateEnum.Timed);
             }
-            else if (CurrentState == _timedState)
+            else if (CurrentState.IsNamed(StateEnum.Timed))
             {
                 Debug.Log("Timer");
 
-                if (!_timedState.IsFinished) return;
-
-                ChangeState(_idleState);
+                ChangeState(StateEnum.Idle);
             }
         }
     }

@@ -19,9 +19,20 @@ namespace M320.StateMachines
 
         #endregion
 
+        private void Start()
+        {
+            DebugCurrentStateBranch("Start");
+        }
+
         private void Update()
         {
+            DebugCurrentStateBranch("Update");
+        }
+
+        private void DebugCurrentStateBranch(string title) 
+        {
             List<State> currentStateBranch = m_core.GetCurrentStateBranch();
+            if (currentStateBranch.Count == 0) return;
 
             string s = StateName(currentStateBranch[0]);
             string seperator = Separator();
@@ -31,7 +42,7 @@ namespace M320.StateMachines
                 s += seperator + StateName(currentStateBranch[i]);
             }
 
-            Debug.Log(s);
+            Debug.Log(title + " | " + s);
         }
 
         #region Helper Methods

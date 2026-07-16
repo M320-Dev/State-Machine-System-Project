@@ -24,11 +24,22 @@ namespace M320.StateMachines
 
         public HierarchicalState(StateName name, StateName initialStateName) : base(name)
         {
-            InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary);
-            Machine = new(StateDictionary[initialStateName]);
+            InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary, this);
+            Machine = new(!initialStateName.IsNullOrWhiteSpace ? StateDictionary[initialStateName] : null);
         }
-        public HierarchicalState(StateName initialStateName) 
-            : this("", initialStateName) { }
+        public HierarchicalState(StateName name) 
+            : this(name, "") { }
+        public HierarchicalState()
+            : this("", "") { }
+
+        #endregion
+
+        #region Properties
+
+        public IReadOnlyCollection<State> States => StateDictionary.States;
+
+        public State PreviousState => Machine?.PreviousState;
+        public State CurrentState => Machine?.CurrentState;
 
         #endregion
 
@@ -38,10 +49,12 @@ namespace M320.StateMachines
 
         #endregion
 
-        #region Properties
+        #region Set Initial State
 
-        public State PreviousState => Machine?.PreviousState;
-        public State CurrentState => Machine?.CurrentState;
+        public void SetInitialState(State initialState)
+        {
+            Machine.SetInitialState(initialState);
+        }
 
         #endregion
 
@@ -79,8 +92,10 @@ namespace M320.StateMachines
 
         public HierarchicalState(StateName name, StateName initialStateName) 
             : base(name, initialStateName) { }
-        public HierarchicalState(StateName initialStateName)
-            : base(initialStateName) { }
+        public HierarchicalState(StateName name) 
+            : base(name) { }
+        public HierarchicalState()
+            : base() { }
 
         public override void SetupContext(object context)
         {

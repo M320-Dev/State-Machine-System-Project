@@ -4,7 +4,7 @@ namespace M320.StateMachines.Samples.PlayerController
 {
     public sealed class AirboneState : HierarchicalState<PlayerCore>
     {
-        public enum States 
+        public enum StateEnum
         {
             Rise,
             Fall
@@ -12,31 +12,45 @@ namespace M320.StateMachines.Samples.PlayerController
 
         public AirboneState(StateName name, StateName initialStateName)
             : base(name, initialStateName) { }
-        public AirboneState(StateName initialStateName)
-            : base(initialStateName) { }
+        public AirboneState(StateName name)
+            : base(name) { }
+        public AirboneState()
+            : base() { }
 
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                new(States.Rise),
-                new(States.Fall)
+                new(StateEnum.Rise),
+                new(StateEnum.Fall)
             };
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
+
+            ChangeState();
+        }
+
+        public override void OnUpdate(float deltaTime)
+        {
+            base.OnUpdate(deltaTime);
+
+            ChangeState();
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
-            if (Context.rigidbody2D.linearVelocityY > 0f) ChangeState(States.Rise);
-            else ChangeState(States.Fall);
-
             Context.TryMoveX();
+        }
+
+        private void ChangeState() 
+        {
+            if (Context.rigidbody2D.linearVelocityY > 0f) ChangeState(StateEnum.Rise);
+            else ChangeState(StateEnum.Fall);
         }
     }
 }

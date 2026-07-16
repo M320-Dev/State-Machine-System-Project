@@ -5,37 +5,39 @@ namespace M320.StateMachines.Samples.PlayerController
 {
     public sealed class GroundedState : HierarchicalState<PlayerCore>
     {
-        public enum States 
+        public enum StateEnum
         {
             Idle,
             Move
         }
-
         public GroundedState(StateName name, StateName initialStateName) 
             : base(name, initialStateName) { }
-        public GroundedState(StateName initialStateName)
-            : base(initialStateName) { }
+        public GroundedState(StateName name)
+           : base(name) { }
+        public GroundedState()
+            : base() { }
 
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                new(States.Idle),
-                new(States.Move)
+                new(StateEnum.Idle),
+                new(StateEnum.Move)
             };
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
+
+            ChangeState();
         }
 
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
 
-            if (Mathf.Abs(Context.rigidbody2D.linearVelocityX) <= 0.01f) ChangeState(States.Idle);
-            else ChangeState(States.Move);
+            ChangeState();
 
             Context.TryJump();
         }
@@ -45,6 +47,12 @@ namespace M320.StateMachines.Samples.PlayerController
             base.OnFixedUpdate(fixedDeltaTime);
 
             Context.TryMoveX();
+        }
+
+        private void ChangeState() 
+        {
+            if (Mathf.Abs(Context.rigidbody2D.linearVelocityX) <= 0.01f) ChangeState(StateEnum.Idle);
+            else ChangeState(StateEnum.Move);
         }
     }
 }

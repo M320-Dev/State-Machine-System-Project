@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace M320.StateMachines
@@ -9,6 +10,7 @@ namespace M320.StateMachines
 
         public string Name { get; }
 
+        public HierarchicalState Parent { get; internal set; }
         public object Context { get; internal set; }
 
         public virtual bool IsInitiallyFinished { get; } = true;
@@ -59,7 +61,7 @@ namespace M320.StateMachines
 
         #region Methods
 
-        public virtual void SetupContext(object context) 
+        public virtual void SetupContext(object context)
         {
             Context = context;
         }
@@ -82,6 +84,32 @@ namespace M320.StateMachines
         }
 
         public virtual void OnExit() { }
+
+        public List<State> GetBranch()
+        {
+            List<State> branch = new();
+            for (State state = this; state != null; state = state.Parent)
+            {
+                branch.Add(state);
+            }
+            branch.Reverse();
+            return branch;
+        }
+        public List<HierarchicalState> GetAncestryBranch()
+        {
+            List<HierarchicalState> branch = new();
+            for (HierarchicalState state = Parent; state != null; state = state.Parent)
+            {
+                branch.Add(state);
+            }
+            branch.Reverse();
+            return branch;
+        }
+
+        public bool IsNamed(Enum stateEnum) 
+        {
+            return Name == stateEnum.ToString();
+        }
 
         #endregion
     }

@@ -7,7 +7,7 @@ namespace M320.StateMachines.Samples.PlayerController
 {
     public sealed class PlayerCore : StateMachineCore<PlayerCore>
     {
-        public enum States
+        public enum StateEnum
         {
             Grounded,
             Airbone
@@ -30,15 +30,6 @@ namespace M320.StateMachines.Samples.PlayerController
         [SerializeField, Range(0.02f, 0.05f)] private float m_groundCheckDistance = 0.03f;
         [SerializeField, Range(0f, 0.1f)] private float m_groundCheckTolerance = 0.05f;
 
-        [Header("Initial State")]
-        [SerializeField] private States m_initialState = States.Grounded;
-
-        [Header("Initial State - Grounded")]
-        [SerializeField] private GroundedState.States m_initialStateGrounded = GroundedState.States.Idle;
-
-        [Header("Initial State - Airbone")]
-        [SerializeField] private AirboneState.States m_initialStateAirbone = AirboneState.States.Fall;
-
         #endregion
 
         #region Cache Fields & Properties
@@ -54,8 +45,6 @@ namespace M320.StateMachines.Samples.PlayerController
 
         #endregion
 
-        protected override State InitialState => StateDictionary[m_initialState];
-
         protected override PlayerCore Context => this;
 
         protected override void Update()
@@ -66,16 +55,16 @@ namespace M320.StateMachines.Samples.PlayerController
 
             CheckIfGrounded();
 
-            if (_isGrounded) ChangeState(States.Grounded);
-            else ChangeState(States.Airbone);
+            if (_isGrounded) ChangeState(StateEnum.Grounded);
+            else ChangeState(StateEnum.Airbone);
         }
 
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[] 
             {
-                new GroundedState(States.Grounded, m_initialStateGrounded),
-                new AirboneState(m_initialStateAirbone)
+                new GroundedState(StateEnum.Grounded),
+                new AirboneState(StateEnum.Airbone)
             };
         }
 
