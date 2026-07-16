@@ -8,7 +8,6 @@ namespace M320.StateMachines
 
         protected readonly StateMachine Machine;
 
-
         public event ChangeHandler<State> StateChanged 
         {
             add 
@@ -23,20 +22,18 @@ namespace M320.StateMachines
 
         #region Constructors
 
-        public HierarchicalState(StateName name, StateName initialStateName, float startTime = 0f) : base(name)
+        public HierarchicalState(StateName name, StateName initialStateName) : base(name)
         {
-            Initialize();
-            InitializationUtility.Initialize(ConstructStates(), Context, StateDictionary);
-            Machine = new(StateDictionary[initialStateName], startTime);
+            InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary);
+            Machine = new(StateDictionary[initialStateName]);
         }
-        public HierarchicalState(StateName initialStateName, float startTime = 0f) 
-            : this("", initialStateName, startTime) { }
+        public HierarchicalState(StateName initialStateName) 
+            : this("", initialStateName) { }
 
         #endregion
 
         #region Initialization
 
-        protected virtual void Initialize() { }
         protected abstract IReadOnlyList<State> ConstructStates();
 
         #endregion
@@ -65,15 +62,30 @@ namespace M320.StateMachines
 
         #region Change State
 
-        protected void ChangeState(StateName stateName, float startTime = 0f, bool forceChange = false)
+        protected void ChangeState(StateName stateName, bool forceChange = false)
         {
-            ChangeState(StateDictionary[stateName], startTime, forceChange);
+            ChangeState(StateDictionary[stateName], forceChange);
         }
-        public void ChangeState(State state, float startTime = 0f, bool forceChange = false)
+        public void ChangeState(State state, bool forceChange = false)
         {
-            Machine.ChangeState(state, startTime, forceChange);
+            Machine.ChangeState(state, forceChange);
         }
 
         #endregion
+    }
+    public abstract class HierarchicalState<TContext> : HierarchicalState
+    {
+        new protected TContext Context;
+
+        public HierarchicalState(StateName name, StateName initialStateName) 
+            : base(name, initialStateName) { }
+        public HierarchicalState(StateName initialStateName)
+            : base(initialStateName) { }
+
+        public override void SetupContext(object context)
+        {
+            base.SetupContext(context);
+            Context = (TContext)context;
+        }
     }
 }

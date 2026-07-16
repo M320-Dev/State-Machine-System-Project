@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace M320.StateMachines.Samples.PlayerController
 {
-    public sealed class PlayerCore : StateMachineCore
+    public sealed class PlayerCore : StateMachineCore<PlayerCore>
     {
         public enum States
         {
@@ -36,6 +36,9 @@ namespace M320.StateMachines.Samples.PlayerController
         [Header("Initial State - Grounded")]
         [SerializeField] private GroundedState.States m_initialStateGrounded = GroundedState.States.Idle;
 
+        [Header("Initial State - Airbone")]
+        [SerializeField] private AirboneState.States m_initialStateAirbone = AirboneState.States.Fall;
+
         #endregion
 
         #region Cache Fields & Properties
@@ -53,7 +56,7 @@ namespace M320.StateMachines.Samples.PlayerController
 
         protected override State InitialState => StateDictionary[m_initialState];
 
-        protected override object Context => this;
+        protected override PlayerCore Context => this;
 
         protected override void Update()
         {
@@ -63,8 +66,8 @@ namespace M320.StateMachines.Samples.PlayerController
 
             CheckIfGrounded();
 
-            if (_isGrounded) ChangeState(States.Grounded, true);
-            else ChangeState(States.Airbone, true);
+            if (_isGrounded) ChangeState(States.Grounded);
+            else ChangeState(States.Airbone);
         }
 
         protected override IReadOnlyList<State> ConstructStates()
@@ -72,7 +75,7 @@ namespace M320.StateMachines.Samples.PlayerController
             return new State[] 
             {
                 new GroundedState(States.Grounded, m_initialStateGrounded),
-                new AirboneState(States.Airbone)
+                new AirboneState(m_initialStateAirbone)
             };
         }
 

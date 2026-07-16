@@ -1,8 +1,9 @@
 using System;
+using UnityEngine;
 
 namespace M320.StateMachines
 {
-    public abstract class State
+    public class State
     {
         #region Properties
 
@@ -10,6 +11,7 @@ namespace M320.StateMachines
 
         public object Context { get; internal set; }
 
+        public virtual bool IsInitiallyFinished { get; } = true;
         public bool IsFinished { get; protected set; }
 
         public float StartTime { get; private set; }
@@ -57,10 +59,15 @@ namespace M320.StateMachines
 
         #region Methods
 
-        public virtual void OnEnter(float startTime)
+        public virtual void SetupContext(object context) 
         {
-            IsFinished = false;
-            StartTime = startTime;
+            Context = context;
+        }
+
+        public virtual void OnEnter()
+        {
+            IsFinished = IsInitiallyFinished;
+            StartTime = Time.time;
             ElapsedTime = 0f;
             FixedElapsedTime = 0;
         }
@@ -77,5 +84,18 @@ namespace M320.StateMachines
         public virtual void OnExit() { }
 
         #endregion
+    }
+    public class State<TContext> : State
+    {
+        new protected TContext Context;
+
+        public State(StateName name) : base(name) { }
+        public State() : base() { }
+
+        public override void SetupContext(object context)
+        {
+            base.SetupContext(context);
+            Context = (TContext)context;
+        }
     }
 }

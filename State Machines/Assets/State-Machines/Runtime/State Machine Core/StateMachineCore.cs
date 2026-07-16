@@ -3,22 +3,11 @@ using UnityEngine;
 
 namespace M320.StateMachines
 {
-    public abstract class StateMachineCore : MonoBehaviour, IStateMachine
+    public abstract class StateMachineCoreBase : MonoBehaviour, IStateMachine
     {
         protected readonly StateDictionary StateDictionary = new();
 
-        #region Properties
-
-        protected abstract object Context { get; }
-        protected abstract State InitialState { get; }
-
-        protected StateMachine Machine { get; private set; }
-        public State PreviousState => Machine?.PreviousState;
-        public State CurrentState => Machine?.CurrentState;
-
-        #endregion
-
-        public event ChangeHandler<State> StateChanged 
+        public event ChangeHandler<State> StateChanged
         {
             add
             {
@@ -30,17 +19,25 @@ namespace M320.StateMachines
             }
         }
 
+        #region Properties
+
+        protected abstract State InitialState { get; }
+
+        protected StateMachine Machine { get; private set; }
+        public State PreviousState => Machine?.PreviousState;
+        public State CurrentState => Machine?.CurrentState;
+
+        #endregion
+
         #region Initialization
 
         protected virtual void Awake()
         {
             Initialize();
-            InitializationUtility.Initialize(ConstructStates(), Context, StateDictionary);
             Machine = new(InitialState);
         }
 
         protected virtual void Initialize() { }
-        protected abstract IReadOnlyList<State> ConstructStates();
 
         #endregion
 
@@ -65,16 +62,16 @@ namespace M320.StateMachines
         }
         protected void ChangeState(State state, bool forceChange = false)
         {
-            Machine.ChangeState(state, Time.time, forceChange);
+            Machine.ChangeState(state, forceChange);
         }
 
         #endregion
 
-        public List<State> GetCurrentStateBranch() 
+        public List<State> GetCurrentStateBranch()
         {
             List<State> stateBranch = new();
             State state = CurrentState;
-            while (state != null) 
+            while (state != null)
             {
                 stateBranch.Add(state);
 
@@ -82,7 +79,26 @@ namespace M320.StateMachines
 
                 state = hierarchicalState.CurrentState;
             }
-            return stateBranch;   
+            return stateBranch;
         }
+    }
+    public abstract class StateMachineCore<TContext> : StateMachineCoreBase, IStateMachine
+    {
+        protected abstract TContext Context { get; }
+
+        #region Initialization
+
+        protected override void Initialize()
+        {
+            InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary);
+        }
+
+        protected abstract IReadOnlyList<State> ConstructStates();
+
+        #endregion
+    }
+    public abstract class ContextlessStateMachineCore : StateMachineCore<EmptyContext>
+    {
+        protected override EmptyContext Context => default;
     }
 }

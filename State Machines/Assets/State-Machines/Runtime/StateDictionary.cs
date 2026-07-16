@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace M320.StateMachines
 {
-    public sealed class StateDictionary 
+    public sealed class StateDictionary
     {
         private readonly Dictionary<string, State> _dictionary = new();
 

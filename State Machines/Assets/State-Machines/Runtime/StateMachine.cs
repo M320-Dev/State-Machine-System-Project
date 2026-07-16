@@ -17,14 +17,14 @@ namespace M320.StateMachines
 
         public event ChangeHandler<State> StateChanged;
 
-        public StateMachine(State initialState, float startTime = 0f)
+        public StateMachine(State initialState)
         {
             CurrentState = initialState ?? throw new ArgumentNullException(nameof(initialState));
             PreviousState = CurrentState;
-            initialState?.OnEnter(startTime);
+            initialState?.OnEnter();
         }
 
-        public void ChangeState(State state, float startTime = 0f, bool forceChange = false)
+        public void ChangeState(State state, bool forceChange = false)
         {
             if (state == null || state == CurrentState) return;
 
@@ -32,7 +32,7 @@ namespace M320.StateMachines
 
             CurrentState.OnExit();
             CurrentState = state;
-            CurrentState.OnEnter(startTime);
+            CurrentState.OnEnter();
 
             StateChanged?.Invoke(PreviousState, CurrentState);
 

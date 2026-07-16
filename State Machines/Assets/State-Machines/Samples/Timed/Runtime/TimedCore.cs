@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace M320.StateMachines.Samples.Platformer2D
 {
-    public sealed class TimedCore : StateMachineCore
+    public sealed class TimedCore : ContextlessStateMachineCore
     {
         #region Inspector Fields
 
@@ -23,7 +23,6 @@ namespace M320.StateMachines.Samples.Platformer2D
         #region Properties
 
         protected override State InitialState => _idleState;
-        protected override object Context => null;
 
         #endregion
 
@@ -58,7 +57,7 @@ namespace M320.StateMachines.Samples.Platformer2D
                 if (mouse == null) return;
                 if (!mouse.leftButton.wasPressedThisFrame) return;
 
-                ChangeState(_timedState, true);
+                ChangeState(_timedState);
             }
             else if (CurrentState == _timedState)
             {

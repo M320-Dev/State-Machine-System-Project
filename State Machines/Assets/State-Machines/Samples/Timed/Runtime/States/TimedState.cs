@@ -9,9 +9,9 @@ namespace M320.StateMachines.Samples.Platformer2D
         public TimedState(float duration, UpdateMode mode) 
             : base(duration, mode) { }
 
-        public override void OnEnter(float startTime)
+        public override void OnEnter()
         {
-            base.OnEnter(startTime);
+            base.OnEnter();
 
             Debug.Log($"Started Timer | Duration: {Duration}");
         }
@@ -21,8 +21,6 @@ namespace M320.StateMachines.Samples.Platformer2D
             base.OnUpdate(deltaTime);
 
             Debug.Log($"Updating Timer | Elapsed Time: {ElapsedTime} / {Duration}");
-
-            if (ElapsedTime >= Duration) IsFinished = true;
         }
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
