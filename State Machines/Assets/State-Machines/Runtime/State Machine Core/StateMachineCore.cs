@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace M320.StateMachines
+namespace M320.StateMachineSystem
 {
     public abstract class StateMachineCoreBase : MonoBehaviour, IStateMachine
     {

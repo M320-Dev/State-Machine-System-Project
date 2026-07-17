@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace M320.StateMachines
+namespace M320.StateMachineSystem
 {
     public sealed class StateDictionary
     {

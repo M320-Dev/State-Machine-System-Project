@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace M320.StateMachines.Samples.PlayerController
+namespace M320.StateMachineSystem.Samples.PlayerController
 {
     public sealed class GroundedState : HierarchicalState<PlayerCore>
     {

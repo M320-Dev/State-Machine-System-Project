@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace M320.StateMachines.Samples.Platformer2D
+namespace M320.StateMachineSystem.Samples.Timed
 {
     public sealed class TimedCore : ContextlessStateMachineCore
     {

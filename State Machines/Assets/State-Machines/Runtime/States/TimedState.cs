@@ -1,4 +1,4 @@
-namespace M320.StateMachines
+namespace M320.StateMachineSystem
 {
     public class TimedState : State
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace M320.StateMachines.Samples.PlayerController
+namespace M320.StateMachineSystem.Samples.PlayerController
 {
     public sealed class PlayerCore : StateMachineCore<PlayerCore>
     {

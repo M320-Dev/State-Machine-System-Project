@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace M320.StateMachines.Samples.Platformer2D
+namespace M320.StateMachineSystem.Samples.Timed
 {
-    public sealed class TimedState : StateMachines.TimedState
+    public sealed class TimedState : StateMachineSystem.TimedState
     {
         public TimedState(StateName name, float duration, UpdateMode mode) 
             : base(name, duration, mode) { }

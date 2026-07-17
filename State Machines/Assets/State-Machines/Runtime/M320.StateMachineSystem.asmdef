@@ -1,6 +1,6 @@
 {
-    "name": "M320.StateMachines",
-    "rootNamespace": "M320.StateMachines",
+    "name": "M320.StateMachineSystem",
+    "rootNamespace": "M320.StateMachineSystem",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

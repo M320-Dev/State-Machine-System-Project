@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace M320.StateMachines
+namespace M320.StateMachineSystem
 {
     public abstract class HierarchicalState : State, IStateMachine
     {

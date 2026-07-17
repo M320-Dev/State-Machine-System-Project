@@ -1,6 +1,6 @@
 using System;
 
-namespace M320.StateMachines
+namespace M320.StateMachineSystem
 {
     public interface IStateMachine
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace M320.StateMachines.Samples.PlayerController
+namespace M320.StateMachineSystem.Samples.PlayerController
 {
     public sealed class AirboneState : HierarchicalState<PlayerCore>
     {
