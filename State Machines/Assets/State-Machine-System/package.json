@@ -1,0 +1,21 @@
+{
+  "name": "com.m320.state-machine-system",
+  "version": "1.0.0",
+  "displayName": "State Machine System",
+  "description": "FSM and HSM capable. Flexible, reusable, scalable.",
+  "author": {
+    "name": "M_320"
+  },
+  "samples": [
+    {
+        "displayName": "Player Controller",
+        "description": "Contains a PlayerCore for handling plauyer movement.",
+        "path": "Samples~/Player Controller"
+    },
+    {
+        "displayName": "Timed",
+        "description": "Contains a TimedCore for handling an idle and a timed state.",
+        "path": "Samples~/Timed"
+    }
+  ]
+}
