@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0afe2b4fe9d3974d84fe7951319a8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: M320.StateMachines.Samples.Timer::M320.StateMachines.Samples.Platformer2D.TimerCore
+  m_initialLeafState: Idle
   m_timedDuration: 1
   m_mode: 0
 --- !u!4 &28217167
