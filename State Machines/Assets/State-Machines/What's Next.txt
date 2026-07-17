@@ -4,3 +4,5 @@
 
 * Initial Leaf State Logic
 	- Custom PropertryDrawer to select initial leaf state after initialization.
+
+* State Transistion Logic (OnEnter, OnUpdate)
