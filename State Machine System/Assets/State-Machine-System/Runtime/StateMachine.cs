@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace M320.StateMachineSystem
 {
@@ -37,7 +38,9 @@ namespace M320.StateMachineSystem
         {
             if (state == null || state == CurrentState) return;
 
-            if (!forceChange && CurrentStateIsNotFinished()) return;
+            Debug.Log($"{CurrentState.Name} | {CurrentStateIsFinished()} | {state.Name}");
+
+            if (!forceChange && !CurrentStateIsFinished()) return;
 
             CurrentState?.OnExit();
             CurrentState = state;
@@ -47,11 +50,11 @@ namespace M320.StateMachineSystem
 
             PreviousState = CurrentState;
         }
-        private bool CurrentStateIsNotFinished() 
+        private bool CurrentStateIsFinished() 
         {
-            return CurrentState != null 
-                && CurrentState is IFinishable finishable 
-                && !finishable.IsFinished;
+            return CurrentState == null 
+                || CurrentState is not IFinishable finishable 
+                || finishable.IsFinished;
         }
 
         public void Update(float deltaTime)

@@ -47,7 +47,7 @@ namespace M320.StateMachineSystem.Samples.Timed
             }
             else if (CurrentState.IsNamed(StateEnum.Timed))
             {
-                Debug.Log(StateEnum.Idle);
+                Debug.Log(StateEnum.Timed);
 
                 ChangeState(StateEnum.Idle);
             }

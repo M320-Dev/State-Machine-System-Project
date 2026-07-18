@@ -1,3 +1,5 @@
+using System;
+
 namespace M320.StateMachineSystem
 {
     public interface ITimed : IFinishable
@@ -11,7 +13,9 @@ namespace M320.StateMachineSystem
         public static float NormalizedElapsedTime<TTimedState>(this TTimedState timedState) 
             where TTimedState : State, ITimed
         {
-            return timedState.GetElapsedTime(timedState.Mode) / timedState.Duration;
+            float normalizedElapsedTime = timedState.GetElapsedTime(timedState.Mode) / timedState.Duration;
+            normalizedElapsedTime = MathF.Min(normalizedElapsedTime, 1f);
+            return normalizedElapsedTime;
         }
         public static void TryFinish<TTimedState>(this TTimedState timedState, UpdateMode mode)
             where TTimedState : State, ITimed

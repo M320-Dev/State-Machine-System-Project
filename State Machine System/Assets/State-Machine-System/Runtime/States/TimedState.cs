@@ -22,9 +22,13 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        public float NormalizedElapsedTime => ElapsedTime / Duration;
-        public float NormalizedFixedElapsedTime => FixedElapsedTime / Duration;
-        public float GetNormalizedElapsedTime(UpdateMode mode) => GetElapsedTime(mode) / Duration;
+        public float NormalizedElapsedTime => this.NormalizedElapsedTime();
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            _isFinished = false;
+        }
 
         public override void OnUpdate(float deltaTime)
         {

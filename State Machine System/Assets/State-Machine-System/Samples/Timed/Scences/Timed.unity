@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 28217167}
   - component: {fileID: 28217166}
+  - component: {fileID: 28217168}
   m_Layer: 0
   m_Name: Timed Core
   m_TagString: Untagged
@@ -148,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0afe2b4fe9d3974d84fe7951319a8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: M320.StateMachines.Samples.Timer::M320.StateMachines.Samples.Platformer2D.TimerCore
+  m_initialLeafState: Idle
   m_timedDuration: 1
   m_mode: 0
 --- !u!4 &28217167
@@ -165,6 +167,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &28217168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28217165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa99421e492cd44183c82ac1fe2d677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: M320.StateMachineSystem::M320.StateMachineSystem.StateMachineCoreDebugger
+  m_core: {fileID: 28217166}
+  m_separator: =>
+  m_separatorColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_stateNameColor: {r: 1, g: 1, b: 1, a: 1}
+  m_warningColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

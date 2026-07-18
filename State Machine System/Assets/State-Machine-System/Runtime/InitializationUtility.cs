@@ -16,6 +16,8 @@ namespace M320.StateMachineSystem
 
         public static void SetupInitialStateBranch(List<HierarchicalState> ancestryBranch, State leaf) 
         {
+            if (ancestryBranch.Count <= 0) return;
+
             var ancestor = ancestryBranch[0];
             for (int i = 1; i < ancestryBranch.Count; i++)
             {
