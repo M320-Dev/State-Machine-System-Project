@@ -26,33 +26,17 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             };
         }
 
-        public override void OnEnter()
-        {
-            base.OnEnter();
-
-            ChangeState();
-        }
-
         public override void OnUpdate(float deltaTime)
         {
-            base.OnUpdate(deltaTime);
-
-            ChangeState();
-
             Context.TryJump();
+
+            if (Mathf.Abs(Context.rigidbody2D.linearVelocityX) <= 0.01f) ChangeState(StateEnum.Idle);
+            else ChangeState(StateEnum.Move);
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            base.OnFixedUpdate(fixedDeltaTime);
-
             Context.TryMoveX();
-        }
-
-        private void ChangeState() 
-        {
-            if (Mathf.Abs(Context.rigidbody2D.linearVelocityX) <= 0.01f) ChangeState(StateEnum.Idle);
-            else ChangeState(StateEnum.Move);
         }
     }
 }

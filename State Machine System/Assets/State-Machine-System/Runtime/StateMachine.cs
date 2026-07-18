@@ -37,7 +37,7 @@ namespace M320.StateMachineSystem
         {
             if (state == null || state == CurrentState) return;
 
-            if (!forceChange && CurrentState != null && !CurrentState.IsFinished) return;
+            if (!forceChange && CurrentStateIsNotFinished()) return;
 
             CurrentState?.OnExit();
             CurrentState = state;
@@ -47,14 +47,20 @@ namespace M320.StateMachineSystem
 
             PreviousState = CurrentState;
         }
+        private bool CurrentStateIsNotFinished() 
+        {
+            return CurrentState != null 
+                && CurrentState is IFinishable finishable 
+                && !finishable.IsFinished;
+        }
 
         public void Update(float deltaTime)
         {
-            CurrentState?.OnUpdate(deltaTime);
+            CurrentState?.Update(deltaTime);
         }
         public void FixedUpdate(float fixedDeltaTime)
         {
-            CurrentState?.OnFixedUpdate(fixedDeltaTime);
+            CurrentState?.FixedUpdate(fixedDeltaTime);
         }
     }
 }

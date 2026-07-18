@@ -1,8 +1,10 @@
 namespace M320.StateMachineSystem
 {
-    public class TimedState : State
+    public class TimedState : State, ITimed
     {
-        public override bool IsInitiallyFinished => false;
+        private bool _isFinished;
+        public bool IsFinished => _isFinished;
+        void IFinishable.SetIsFinished(bool isFinished) => _isFinished = isFinished;
 
         public float Duration { get; }
         public UpdateMode Mode { get; }
@@ -22,21 +24,14 @@ namespace M320.StateMachineSystem
         public override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
-            TryFinish(UpdateMode.Update);
+
+            this.TryFinish(UpdateMode.Update);
         }
-        public override void OnFixedUpdate(float deltaTime)
+        public override void OnFixedUpdate(float fixedDeltaTime)
         {
-            base.OnFixedUpdate(deltaTime);
-            TryFinish(UpdateMode.FixedUpdate);
-        }
+            base.OnFixedUpdate(fixedDeltaTime);
 
-        private void TryFinish(UpdateMode mode)
-        {
-            if (Mode != mode) return;
-
-            float elapsedTime = GetElapsedTime(mode);
-
-            if (elapsedTime >= Duration) IsFinished = true;
+            this.TryFinish(UpdateMode.FixedUpdate);
         }
     }
     public class TimedState<TContext> : TimedState

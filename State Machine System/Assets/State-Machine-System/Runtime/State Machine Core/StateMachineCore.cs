@@ -51,12 +51,19 @@ namespace M320.StateMachineSystem
 
         protected virtual void Update()
         {
-            Machine.Update(Time.deltaTime);
+            float deltaTime = Time.deltaTime;
+            OnUpdate(deltaTime);
+            Machine.Update(deltaTime);
         }
         protected virtual void FixedUpdate()
         {
+            float fixedDeltaTime = Time.fixedDeltaTime;
+            OnFixedUpdate(fixedDeltaTime);
             Machine.FixedUpdate(Time.fixedDeltaTime);
         }
+
+        protected virtual void OnUpdate(float deltaTime) { }
+        protected virtual void OnFixedUpdate(float fixedDeltaTime) { }
 
         #endregion
 

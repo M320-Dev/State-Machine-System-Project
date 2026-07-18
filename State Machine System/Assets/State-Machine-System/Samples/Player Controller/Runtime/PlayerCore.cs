@@ -47,10 +47,8 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
         protected override PlayerCore Context => this;
 
-        protected override void Update()
+        protected override void OnUpdate(float deltaTime)
         {
-            base.Update();
-
             _keyboard = Keyboard.current;
 
             CheckIfGrounded();

@@ -60,14 +60,14 @@ namespace M320.StateMachineSystem
 
         #region Update
 
-        public override void OnUpdate(float deltaTime)
+        internal override void Update(float deltaTime)
         {
-            base.OnUpdate(deltaTime);
+            base.Update(deltaTime);
             Machine.Update(deltaTime);
         }
-        public override void OnFixedUpdate(float fixedDeltaTime)
+        internal override void FixedUpdate(float fixedDeltaTime)
         {
-            base.OnFixedUpdate(fixedDeltaTime);
+            base.FixedUpdate(fixedDeltaTime);
             Machine.FixedUpdate(fixedDeltaTime);
         }
 

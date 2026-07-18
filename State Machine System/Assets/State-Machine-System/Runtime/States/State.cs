@@ -14,7 +14,6 @@ namespace M320.StateMachineSystem
         public object Context { get; internal set; }
 
         public virtual bool IsInitiallyFinished { get; } = true;
-        public bool IsFinished { get; protected set; }
 
         public float StartTime { get; private set; }
         public float ElapsedTime { get; private set; }
@@ -68,20 +67,24 @@ namespace M320.StateMachineSystem
 
         public virtual void OnEnter()
         {
-            IsFinished = IsInitiallyFinished;
             StartTime = Time.time;
             ElapsedTime = 0f;
             FixedElapsedTime = 0;
         }
 
-        public virtual void OnUpdate(float deltaTime)
+        internal virtual void Update(float deltaTime) 
         {
             ElapsedTime += deltaTime;
+            OnUpdate(deltaTime);
         }
-        public virtual void OnFixedUpdate(float fixedDeltaTime)
+        internal virtual void FixedUpdate(float fixedDeltaTime)
         {
             FixedElapsedTime += fixedDeltaTime;
+            OnFixedUpdate(fixedDeltaTime);
         }
+
+        public virtual void OnUpdate(float deltaTime) { }
+        public virtual void OnFixedUpdate(float fixedDeltaTime) { }
 
         public virtual void OnExit() { }
 
