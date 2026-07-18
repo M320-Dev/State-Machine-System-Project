@@ -6,9 +6,27 @@ namespace M320.StateMachineSystem
 {
     public class State
     {
-        #region Properties
+        public readonly string Name;
 
-        public string Name { get; }
+        #region Constructors
+
+        public State(StateName name)
+        {
+            Name = name.IsNullOrWhiteSpace ? TypeName() : name;
+        }
+        public State()
+        {
+            Name = TypeName();
+        }
+
+        private string TypeName() 
+        {
+            return GetType().Name;
+        }
+
+        #endregion
+
+        #region Properties
 
         public HierarchicalState Parent { get; internal set; }
         public object Context { get; internal set; }
@@ -43,21 +61,6 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        #region Constructors
-
-        public State(StateName name)
-        {
-            Name = string.IsNullOrWhiteSpace(name) ? TypeName() : name;
-        }
-        public State()
-        {
-            Name = TypeName();
-        }
-
-        private string TypeName() => GetType().Name;
-
-        #endregion
-
         #region Methods
 
         public virtual void SetupContext(object context)
@@ -72,7 +75,7 @@ namespace M320.StateMachineSystem
             FixedElapsedTime = 0;
         }
 
-        internal virtual void Update(float deltaTime) 
+        internal virtual void Update(float deltaTime)
         {
             ElapsedTime += deltaTime;
             OnUpdate(deltaTime);
@@ -109,7 +112,7 @@ namespace M320.StateMachineSystem
             return branch;
         }
 
-        public bool IsNamed(Enum stateEnum) 
+        public bool IsNamed(Enum stateEnum)
         {
             return Name == stateEnum.ToString();
         }

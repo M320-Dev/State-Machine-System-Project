@@ -848,7 +848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca93c9cdee64b94f840aec6a98e2291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: M320.StateMachines.Samples.PlayerController::M320.StateMachines.Samples.PlayerController.PlayerCore
-  m_initialLeafState: Idle
+  m_initialLeafState: Fall
   m_collider: {fileID: 1946621157}
   m_rigidbody2D: {fileID: 1946621156}
   m_moveSpeed: 7

@@ -6,11 +6,11 @@ namespace M320.StateMachineSystem
     {
         protected readonly StateDictionary StateDictionary = new();
 
-        protected readonly StateMachine Machine;
+        protected readonly StateMachine Machine = new();
 
-        public event ChangeHandler<State> StateChanged 
+        public event ChangeHandler<State> StateChanged
         {
-            add 
+            add
             {
                 if (Machine != null) Machine.StateChanged += value;
             }
@@ -22,15 +22,12 @@ namespace M320.StateMachineSystem
 
         #region Constructors
 
-        public HierarchicalState(StateName name, StateName initialStateName) : base(name)
+        public HierarchicalState(StateName name) : base(name)
         {
             InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary, this);
-            Machine = new(!initialStateName.IsNullOrWhiteSpace ? StateDictionary[initialStateName] : null);
         }
-        public HierarchicalState(StateName name) 
-            : this(name, "") { }
-        public HierarchicalState()
-            : this("", "") { }
+        public HierarchicalState() 
+            : this("") { }
 
         #endregion
 
@@ -90,12 +87,12 @@ namespace M320.StateMachineSystem
     {
         new protected TContext Context;
 
-        public HierarchicalState(StateName name, StateName initialStateName) 
-            : base(name, initialStateName) { }
-        public HierarchicalState(StateName name) 
-            : base(name) { }
-        public HierarchicalState()
-            : base() { }
+        #region Constructors
+
+        public HierarchicalState(StateName name) : base(name) { }
+        public HierarchicalState() : base() { }
+
+        #endregion
 
         public override void SetupContext(object context)
         {

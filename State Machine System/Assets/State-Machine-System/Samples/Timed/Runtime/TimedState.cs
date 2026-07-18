@@ -4,10 +4,14 @@ namespace M320.StateMachineSystem.Samples.Timed
 {
     public sealed class TimedState : StateMachineSystem.TimedState
     {
-        public TimedState(StateName name, float duration, UpdateMode mode) 
+        #region Constructors
+
+        public TimedState(StateName name, float duration, UpdateMode mode = UpdateMode.Update)
             : base(name, duration, mode) { }
-        public TimedState(float duration, UpdateMode mode) 
+        public TimedState(float duration, UpdateMode mode = UpdateMode.Update)
             : base(duration, mode) { }
+
+        #endregion
 
         public override void OnEnter()
         {

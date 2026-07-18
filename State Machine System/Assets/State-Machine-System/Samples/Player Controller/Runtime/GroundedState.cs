@@ -10,8 +10,6 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             Idle,
             Move
         }
-        public GroundedState(StateName name, StateName initialStateName) 
-            : base(name, initialStateName) { }
         public GroundedState(StateName name)
            : base(name) { }
         public GroundedState()

@@ -9,13 +9,18 @@ namespace M320.StateMachineSystem
         public float Duration { get; }
         public UpdateMode Mode { get; }
 
-        public TimedState(StateName name, float duration, UpdateMode mode) : base(name)
+        #region Constructors
+
+        public TimedState(StateName name, float duration, UpdateMode mode = UpdateMode.Update) 
+            : base(name)
         {
             Duration = duration;
             Mode = mode;
         }
-        public TimedState(float duration, UpdateMode mode)
+        public TimedState(float duration, UpdateMode mode = UpdateMode.Update) 
             : this("", duration, mode) { }
+
+        #endregion
 
         public float NormalizedElapsedTime => ElapsedTime / Duration;
         public float NormalizedFixedElapsedTime => FixedElapsedTime / Duration;
@@ -38,10 +43,14 @@ namespace M320.StateMachineSystem
     {
         new protected TContext Context;
 
-        public TimedState(StateName name, float duration, UpdateMode mode) 
+        #region Constructors
+
+        public TimedState(StateName name, float duration, UpdateMode mode = UpdateMode.Update)
             : base(name, duration, mode) { }
-        public TimedState(float duration, UpdateMode mode)
+        public TimedState(float duration, UpdateMode mode = UpdateMode.Update)
             : base(duration, mode) { }
+
+        #endregion
 
         public override void SetupContext(object context)
         {

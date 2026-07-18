@@ -10,8 +10,6 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             Fall
         }
 
-        public AirboneState(StateName name, StateName initialStateName)
-            : base(name, initialStateName) { }
         public AirboneState(StateName name)
             : base(name) { }
         public AirboneState()
