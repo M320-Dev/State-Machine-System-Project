@@ -13,27 +13,27 @@ namespace M320.StateMachineSystem.Samples.Timed
 
         #endregion
 
-        public override void OnEnter()
+        protected override void OnEnter()
         {
             base.OnEnter();
 
             Debug.Log($"Started Timer | Duration: {Duration}");
         }
 
-        public override void OnUpdate(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
 
             Debug.Log($"Updating Timer | Elapsed Time: {ElapsedTime} / {Duration}");
         }
-        public override void OnFixedUpdate(float fixedDeltaTime)
+        protected override void OnFixedUpdate(float fixedDeltaTime)
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
             Debug.Log($"Updating Fixed Timer | Fixed Elapsed Time: {FixedElapsedTime} / {Duration}");
         }
 
-        public override void OnExit()
+        protected override void OnExit()
         {
             Debug.Log("Ended Timer");
         }

@@ -8,6 +8,13 @@ namespace M320.StateMachineSystem
     {
         public readonly string Name;
 
+        #region Events
+
+        public event Action Entered;
+        public event Action Exited;
+
+        #endregion
+
         #region Constructors
 
         public State(StateName name)
@@ -63,17 +70,32 @@ namespace M320.StateMachineSystem
 
         #region Methods
 
-        public virtual void SetupContext(object context)
+        internal virtual void SetContext(object context)
         {
             Context = context;
         }
 
-        public virtual void OnEnter()
+        #region Enter
+
+        protected virtual void OnReset() 
         {
             StartTime = Time.time;
             ElapsedTime = 0f;
             FixedElapsedTime = 0;
         }
+        internal void Enter()
+        {
+            OnReset();
+
+            OnEnter();
+
+            Entered?.Invoke();
+        }
+        protected virtual void OnEnter() { }
+
+        #endregion
+
+        #region Update / Fixed Update
 
         internal virtual void Update(float deltaTime)
         {
@@ -86,10 +108,24 @@ namespace M320.StateMachineSystem
             OnFixedUpdate(fixedDeltaTime);
         }
 
-        public virtual void OnUpdate(float deltaTime) { }
-        public virtual void OnFixedUpdate(float fixedDeltaTime) { }
+        protected virtual void OnUpdate(float deltaTime) { }
+        protected virtual void OnFixedUpdate(float fixedDeltaTime) { }
 
-        public virtual void OnExit() { }
+        #endregion
+
+        #region Exit
+
+        internal void Exit() 
+        {
+            OnExit();
+
+            Exited?.Invoke();
+        }
+        protected virtual void OnExit() { }
+
+        #endregion
+
+        #region Miscellaneous
 
         public List<State> GetBranch()
         {
@@ -118,6 +154,8 @@ namespace M320.StateMachineSystem
         }
 
         #endregion
+
+        #endregion
     }
     public class State<TContext> : State
     {
@@ -126,9 +164,9 @@ namespace M320.StateMachineSystem
         public State(StateName name) : base(name) { }
         public State() : base() { }
 
-        public override void SetupContext(object context)
+        internal override void SetContext(object context)
         {
-            base.SetupContext(context);
+            base.SetContext(context);
             Context = (TContext)context;
         }
     }

@@ -22,7 +22,7 @@ namespace M320.StateMachineSystem
         {
             CurrentState = initialState;
             PreviousState = CurrentState;
-            CurrentState?.OnEnter();
+            CurrentState?.Enter();
         }
 
         public void SetInitialState(State initialState) 
@@ -31,7 +31,7 @@ namespace M320.StateMachineSystem
 
             CurrentState = initialState ?? throw new ArgumentNullException(nameof(initialState));
             PreviousState = CurrentState;
-            CurrentState.OnEnter();
+            CurrentState.Enter();
         }
 
         public void ChangeState(State state, bool forceChange = false)
@@ -42,9 +42,9 @@ namespace M320.StateMachineSystem
 
             if (!forceChange && !CurrentStateIsFinished()) return;
 
-            CurrentState?.OnExit();
+            CurrentState?.Exit();
             CurrentState = state;
-            CurrentState.OnEnter();
+            CurrentState.Enter();
 
             StateChanged?.Invoke(PreviousState, CurrentState);
 

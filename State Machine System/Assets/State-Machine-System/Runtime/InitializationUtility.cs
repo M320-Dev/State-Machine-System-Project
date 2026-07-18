@@ -9,8 +9,8 @@ namespace M320.StateMachineSystem
             foreach (var state in states)
             {
                 state.Parent = parentState;
+                state.SetContext(context);
                 stateDictionary.Add(state);
-                state.SetupContext(context);
             }
         }
 

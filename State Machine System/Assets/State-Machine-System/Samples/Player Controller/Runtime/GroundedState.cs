@@ -24,7 +24,7 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             };
         }
 
-        public override void OnUpdate(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             Context.TryJump();
 
@@ -32,7 +32,7 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             else ChangeState(StateEnum.Move);
         }
 
-        public override void OnFixedUpdate(float fixedDeltaTime)
+        protected override void OnFixedUpdate(float fixedDeltaTime)
         {
             Context.TryMoveX();
         }

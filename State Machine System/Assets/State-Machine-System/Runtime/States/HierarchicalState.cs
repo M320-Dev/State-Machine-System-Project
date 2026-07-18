@@ -94,9 +94,9 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        public override void SetupContext(object context)
+        internal override void SetContext(object context)
         {
-            base.SetupContext(context);
+            base.SetContext(context);
             Context = (TContext)context;
         }
     }

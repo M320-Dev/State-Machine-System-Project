@@ -24,19 +24,19 @@ namespace M320.StateMachineSystem
 
         public float NormalizedElapsedTime => this.NormalizedElapsedTime();
 
-        public override void OnEnter()
+        protected override void OnReset()
         {
-            base.OnEnter();
+            base.OnReset();
             _isFinished = false;
         }
 
-        public override void OnUpdate(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             base.OnUpdate(deltaTime);
 
             this.TryFinish(UpdateMode.Update);
         }
-        public override void OnFixedUpdate(float fixedDeltaTime)
+        protected override void OnFixedUpdate(float fixedDeltaTime)
         {
             base.OnFixedUpdate(fixedDeltaTime);
 
@@ -56,9 +56,9 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        public override void SetupContext(object context)
+        internal override void SetContext(object context)
         {
-            base.SetupContext(context);
+            base.SetContext(context);
             Context = (TContext)context;
         }
     }
