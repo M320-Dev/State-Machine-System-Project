@@ -154,9 +154,9 @@ namespace M320.StateMachineSystem
             return branch;
         }
 
-        public bool IsNamed(Enum stateEnum)
+        public bool IsNamed(StateName name)
         {
-            return Name == stateEnum.ToString();
+            return Name == name;
         }
 
         #endregion

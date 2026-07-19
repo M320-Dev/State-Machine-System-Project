@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ namespace M320.StateMachineSystem.Samples.Timed.UI
     public sealed class TimedCoreUI : MonoBehaviour
     {
         [SerializeField] private TimedCore m_core;
+        [SerializeField] private TextMeshProUGUI m_stateNameTMP;
         [SerializeField] private Slider m_silder;
 
         private void Awake()
@@ -41,6 +43,24 @@ namespace M320.StateMachineSystem.Samples.Timed.UI
             OnStateChanged(m_core.CurrentState);
         }
 
+        private void OnStateChanged(State current)
+        {
+            if (m_silder == null) return;
+
+            m_stateNameTMP.text = current.Name;
+
+            if (current.IsNamed(TimedCore.StateEnum.Idle))
+            {
+                m_silder.value = 0f;
+            }
+            else if (current.IsNamed(TimedCore.StateEnum.Timed))
+            {
+                TimedState timedState = (TimedState)current;
+
+                m_silder.value = timedState.NormalizedElapsedTime;
+            }
+        }
+
         private void Update()
         {
             OnUpdate(UpdateMode.Update);
@@ -59,22 +79,6 @@ namespace M320.StateMachineSystem.Samples.Timed.UI
                 TimedState timedState = (TimedState)m_core.CurrentState;
 
                 if (timedState.Mode != mode) return;
-
-                m_silder.value = timedState.NormalizedElapsedTime;
-            }
-        }
-
-        private void OnStateChanged(State current)
-        {
-            if (m_silder == null) return;
-
-            if (current.IsNamed(TimedCore.StateEnum.Idle))
-            {
-                m_silder.value = 0f;
-            }
-            else if (current.IsNamed(TimedCore.StateEnum.Timed))
-            {
-                TimedState timedState = (TimedState)current;
 
                 m_silder.value = timedState.NormalizedElapsedTime;
             }
