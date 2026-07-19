@@ -10,17 +10,7 @@ namespace M320.StateMachineSystem
 
         protected readonly StateDictionary StateDictionary = new();
 
-        public event ChangeHandler<State> StateChanged
-        {
-            add
-            {
-                if (Machine != null) Machine.StateChanged += value;
-            }
-            remove
-            {
-                if (Machine != null) Machine.StateChanged -= value;
-            }
-        }
+        public event ChangeHandler<State> StateChanged;
 
         #region Properties
 
@@ -38,6 +28,7 @@ namespace M320.StateMachineSystem
         {
             State initialState = Initialize();
             Machine = new(initialState);
+            Machine.StateChanged += (p, c) => StateChanged?.Invoke(p, c);
         }
 
         /// <returns>

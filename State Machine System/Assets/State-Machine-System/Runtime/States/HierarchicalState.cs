@@ -8,23 +8,14 @@ namespace M320.StateMachineSystem
 
         protected readonly StateMachine Machine = new();
 
-        public event ChangeHandler<State> StateChanged
-        {
-            add
-            {
-                if (Machine != null) Machine.StateChanged += value;
-            }
-            remove
-            {
-                if (Machine != null) Machine.StateChanged -= value;
-            }
-        }
+        public event ChangeHandler<State> StateChanged;
 
         #region Constructors
 
         public HierarchicalState(StateName name) : base(name)
         {
             InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary, this);
+            Machine.StateChanged += (p, c) => StateChanged?.Invoke(p, c);
         }
         public HierarchicalState() 
             : this("") { }

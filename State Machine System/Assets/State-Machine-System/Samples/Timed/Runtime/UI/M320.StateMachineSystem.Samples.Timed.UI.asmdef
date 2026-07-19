@@ -1,0 +1,17 @@
+{
+    "name": "M320.StateMachineSystem.Samples.Timed.UI",
+    "rootNamespace": "M320.StateMachineSystem.Samples.Timed.UI",
+    "references": [
+        "GUID:3f80ef936c56340498e37859249a30fe",
+        "GUID:0e13911e977f8c6499a77ad0b9627b6a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

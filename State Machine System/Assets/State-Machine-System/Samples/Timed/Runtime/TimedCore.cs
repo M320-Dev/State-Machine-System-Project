@@ -38,8 +38,6 @@ namespace M320.StateMachineSystem.Samples.Timed
 
             if (CurrentState.IsNamed(StateEnum.Idle))
             {
-                Debug.Log(StateEnum.Idle);
-
                 if (mouse == null) return;
                 if (!mouse.leftButton.wasPressedThisFrame) return;
 
@@ -47,8 +45,6 @@ namespace M320.StateMachineSystem.Samples.Timed
             }
             else if (CurrentState.IsNamed(StateEnum.Timed))
             {
-                Debug.Log(StateEnum.Timed);
-
                 ChangeState(StateEnum.Idle);
             }
         }

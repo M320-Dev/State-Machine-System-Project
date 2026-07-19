@@ -38,17 +38,15 @@ namespace M320.StateMachineSystem
         {
             if (state == null || state == CurrentState) return;
 
-            Debug.Log($"{CurrentState.Name} | {CurrentStateIsFinished()} | {state.Name}");
-
             if (!forceChange && !CurrentStateIsFinished()) return;
+
+            PreviousState = CurrentState;
 
             CurrentState?.Exit();
             CurrentState = state;
             CurrentState.Enter();
 
             StateChanged?.Invoke(PreviousState, CurrentState);
-
-            PreviousState = CurrentState;
         }
         private bool CurrentStateIsFinished() 
         {

@@ -12,6 +12,8 @@ namespace M320.StateMachineSystem
 
         public event Action Entered;
         public event Action Exited;
+        public event Action<float> Updated;
+        public event Action<float> FixedUpdated;
 
         #endregion
 
@@ -37,8 +39,6 @@ namespace M320.StateMachineSystem
 
         public HierarchicalState Parent { get; internal set; }
         public object Context { get; internal set; }
-
-        public virtual bool IsInitiallyFinished { get; } = true;
 
         public float StartTime { get; private set; }
         public float ElapsedTime { get; private set; }
@@ -100,12 +100,18 @@ namespace M320.StateMachineSystem
         internal virtual void Update(float deltaTime)
         {
             ElapsedTime += deltaTime;
+
             OnUpdate(deltaTime);
+
+            Updated?.Invoke(deltaTime);
         }
         internal virtual void FixedUpdate(float fixedDeltaTime)
         {
             FixedElapsedTime += fixedDeltaTime;
+
             OnFixedUpdate(fixedDeltaTime);
+
+            FixedUpdated?.Invoke(fixedDeltaTime);
         }
 
         protected virtual void OnUpdate(float deltaTime) { }
