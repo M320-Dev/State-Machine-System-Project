@@ -1,17 +1,9 @@
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 
 namespace M320.StateMachineSystem
 {
-    public interface IStateMachine
-    {
-        State PreviousState { get; }
-        State CurrentState { get; }
-
-        event ChangeHandler<State> StateChanged;
-    }
-
-    public sealed class StateMachine : IStateMachine
+    public sealed class StateMachine 
     {
         public State PreviousState { get; private set; }
         public State CurrentState { get; private set; }
@@ -34,11 +26,28 @@ namespace M320.StateMachineSystem
             CurrentState.Enter();
         }
 
-        public void ChangeState(State state, bool forceChange = false)
+        public List<State> GetCurrentStateBranch()
         {
-            if (state == null || state == CurrentState) return;
+            List<State> stateBranch = new();
+            State state = CurrentState;
+            while (state != null)
+            {
+                stateBranch.Add(state);
 
-            if (!forceChange && !CurrentStateIsFinished()) return;
+                if (state is not HierarchicalState hierarchicalState) break;
+
+                state = hierarchicalState.CurrentState;
+            }
+            return stateBranch;
+        }
+
+        #region Change State
+
+        public bool ChangeState(State state, bool forceChange = false)
+        {
+            if (state == null || state == CurrentState) return false;
+
+            if (!forceChange && !CurrentStateIsFinished()) return false;
 
             PreviousState = CurrentState;
 
@@ -47,13 +56,20 @@ namespace M320.StateMachineSystem
             CurrentState.Enter();
 
             StateChanged?.Invoke(PreviousState, CurrentState);
+
+            return true;
         }
+
         private bool CurrentStateIsFinished() 
         {
             return CurrentState == null 
                 || CurrentState is not IFinishable finishable 
                 || finishable.IsFinished;
         }
+
+        #endregion
+
+        #region Update
 
         public void Update(float deltaTime)
         {
@@ -63,5 +79,7 @@ namespace M320.StateMachineSystem
         {
             CurrentState?.FixedUpdate(fixedDeltaTime);
         }
+
+        #endregion
     }
 }

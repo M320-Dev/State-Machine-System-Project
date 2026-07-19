@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace M320.StateMachineSystem
 {
-    public abstract class StateMachineCoreBase : MonoBehaviour, IStateMachine
+    public abstract class StateMachineCoreBase : MonoBehaviour
     {
         [SerializeField] private string m_initialLeafState;
 
@@ -36,6 +36,11 @@ namespace M320.StateMachineSystem
         /// </returns>
         protected abstract State Initialize();
 
+        public State GetState(StateName name) 
+        {
+            return StateDictionary[name];
+        }
+
         #endregion
 
         #region Update
@@ -60,13 +65,13 @@ namespace M320.StateMachineSystem
 
         #region Change State
 
-        protected void ChangeState(StateName stateName, bool forceChange = false)
+        public bool ChangeState(StateName stateName, bool forceChange = false)
         {
-            ChangeState(StateDictionary[stateName], forceChange);
+            return ChangeState(StateDictionary[stateName], forceChange);
         }
-        protected void ChangeState(State state, bool forceChange = false)
+        public bool ChangeState(State state, bool forceChange = false)
         {
-            Machine.ChangeState(state, forceChange);
+            return Machine.ChangeState(state, forceChange);
         }
 
         #endregion
@@ -109,20 +114,10 @@ namespace M320.StateMachineSystem
 
         public List<State> GetCurrentStateBranch()
         {
-            List<State> stateBranch = new();
-            State state = CurrentState;
-            while (state != null)
-            {
-                stateBranch.Add(state);
-
-                if (state is not HierarchicalState hierarchicalState) break;
-
-                state = hierarchicalState.CurrentState;
-            }
-            return stateBranch;
+            return Machine.GetCurrentStateBranch();
         }
     }
-    public abstract class StateMachineCore<TContext> : StateMachineCoreBase, IStateMachine
+    public abstract class StateMachineCore<TContext> : StateMachineCoreBase
     {
         protected abstract TContext Context { get; }
 

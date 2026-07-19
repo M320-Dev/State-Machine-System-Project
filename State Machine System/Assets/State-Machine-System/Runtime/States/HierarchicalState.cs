@@ -2,13 +2,21 @@ using System.Collections.Generic;
 
 namespace M320.StateMachineSystem
 {
-    public abstract class HierarchicalState : State, IStateMachine
+    public abstract class HierarchicalState : State
     {
-        protected readonly StateDictionary StateDictionary = new();
+        #region Fields
 
+        protected readonly StateDictionary StateDictionary = new();
         protected readonly StateMachine Machine = new();
 
+        #endregion
+
+        #region Events
+
         public event ChangeHandler<State> StateChanged;
+        public event ChangeStateBranchHandler StateBranchChanged;
+
+        #endregion
 
         #region Constructors
 
@@ -37,14 +45,15 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        #region Set Initial State
-
         public void SetInitialState(State initialState)
         {
             Machine.SetInitialState(initialState);
         }
 
-        #endregion
+        public List<State> GetCurrentStateBranch() 
+        {
+            return Machine.GetCurrentStateBranch();
+        }
 
         #region Update
 
@@ -63,13 +72,13 @@ namespace M320.StateMachineSystem
 
         #region Change State
 
-        protected void ChangeState(StateName stateName, bool forceChange = false)
+        public void ChangeState(StateName stateName, bool forceChange = false)
         {
             ChangeState(StateDictionary[stateName], forceChange);
         }
-        public void ChangeState(State state, bool forceChange = false)
+        public bool ChangeState(State state, bool forceChange = false)
         {
-            Machine.ChangeState(state, forceChange);
+            return Machine.ChangeState(state, forceChange);
         }
 
         #endregion
