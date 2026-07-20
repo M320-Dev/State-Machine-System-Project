@@ -11,6 +11,10 @@ namespace M320.StateMachineSystem
                 state.Parent = parentState;
                 state.SetContext(context);
                 stateDictionary.Add(state);
+
+                if (state is not HierarchicalState hierarchicalState) continue;
+
+                hierarchicalState.SetupStates();
             }
         }
 

@@ -10,10 +10,8 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             Fall
         }
 
-        public AirboneState(StateName name)
-            : base(name) { }
-        public AirboneState()
-            : base() { }
+        public AirboneState(StateName name) : base(name) { }
+        public AirboneState() : base() { }
 
         protected override IReadOnlyList<State> ConstructStates()
         {

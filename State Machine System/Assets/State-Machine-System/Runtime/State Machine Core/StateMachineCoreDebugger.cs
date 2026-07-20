@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -23,9 +24,9 @@ namespace M320.StateMachineSystem
 
         private void OnDrawGizmos()
         {
-            string s = CurrentStateBranchString();
+            string currentStateBranchString = CurrentStateBranchString();
             GUIStyle style = Style();
-            Handles.Label(transform.position, s, style);
+            Handles.Label(transform.position, currentStateBranchString, style);
         }
 
         private GUIStyle Style() 
@@ -43,15 +44,16 @@ namespace M320.StateMachineSystem
             List<State> currentStateBranch = m_core.GetCurrentStateBranch();
             if (currentStateBranch == null || currentStateBranch.Count == 0) return NoCurrentStateBranch();
 
-            string s = StateName(currentStateBranch[0]);
+            string currentStateBranchString = StateName(currentStateBranch[0]);
             string seperator = Separator();
 
             for (int i = 1; i < currentStateBranch.Count; i++)
             {
-                s += seperator + StateName(currentStateBranch[i]);
+                string stateName = StateName(currentStateBranch[i]);
+                currentStateBranchString += seperator + stateName;
             }
 
-            return s;
+            return currentStateBranchString;
         }
 
         #region Helper Methods

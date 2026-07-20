@@ -6,8 +6,8 @@ namespace M320.StateMachineSystem
         public bool IsFinished => _isFinished;
         void IFinishable.SetIsFinished(bool isFinished) => _isFinished = isFinished;
 
-        public float Duration { get; }
-        public UpdateMode Mode { get; }
+        public float Duration { get; set; }
+        public UpdateMode Mode { get; set; }
 
         #region Constructors
 
@@ -17,8 +17,12 @@ namespace M320.StateMachineSystem
             Duration = duration;
             Mode = mode;
         }
+        public TimedState(StateName name, UpdateMode mode = UpdateMode.Update)
+            : this(name, 0f, mode) { }
         public TimedState(float duration, UpdateMode mode = UpdateMode.Update) 
             : this("", duration, mode) { }
+        public TimedState(UpdateMode mode = UpdateMode.Update)
+            : this("", 0f, mode) { }
 
         #endregion
 

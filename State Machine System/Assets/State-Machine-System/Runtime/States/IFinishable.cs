@@ -4,8 +4,13 @@ namespace M320.StateMachineSystem
     {
         bool IsFinished { get; }
     }
-    public interface IFinishable : IReadOnlyFinishable
+    public interface IFinishableInternal : IReadOnlyFinishable
     {
         internal void SetIsFinished(bool isFinished);
+    }
+    public interface IFinishable : IFinishableInternal
+    {
+        void IFinishableInternal.SetIsFinished(bool isFinished) => SetIsFinished(isFinished);
+        new protected void SetIsFinished(bool isFinished);
     }
 }

@@ -35,10 +35,12 @@ namespace M320.StateMachineSystem
 
         #endregion
 
+        private object _context;
+
         #region Properties
 
         public HierarchicalState Parent { get; internal set; }
-        public object Context { get; internal set; }
+        public object Context => _context;
 
         public float StartTime { get; private set; }
         public float ElapsedTime { get; private set; }
@@ -72,7 +74,7 @@ namespace M320.StateMachineSystem
 
         internal virtual void SetContext(object context)
         {
-            Context = context;
+            _context = context;
         }
 
         #region Enter
@@ -165,7 +167,7 @@ namespace M320.StateMachineSystem
     }
     public class State<TContext> : State
     {
-        new protected TContext Context;
+        new protected TContext Context { get; private set; }
 
         public State(StateName name) : base(name) { }
         public State() : base() { }

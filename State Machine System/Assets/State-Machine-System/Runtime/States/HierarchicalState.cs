@@ -22,7 +22,6 @@ namespace M320.StateMachineSystem
 
         public HierarchicalState(StateName name) : base(name)
         {
-            InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary, this);
             Machine.StateChanged += (p, c) => StateChanged?.Invoke(p, c);
         }
         public HierarchicalState() 
@@ -41,6 +40,10 @@ namespace M320.StateMachineSystem
 
         #region Initialization
 
+        internal void SetupStates() 
+        {
+            InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary, this);
+        }
         protected abstract IReadOnlyList<State> ConstructStates();
 
         #endregion
@@ -72,9 +75,9 @@ namespace M320.StateMachineSystem
 
         #region Change State
 
-        public void ChangeState(StateName stateName, bool forceChange = false)
+        public bool ChangeState(StateName stateName, bool forceChange = false)
         {
-            ChangeState(StateDictionary[stateName], forceChange);
+            return ChangeState(StateDictionary[stateName], forceChange);
         }
         public bool ChangeState(State state, bool forceChange = false)
         {
