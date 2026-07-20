@@ -114,7 +114,7 @@ namespace M320.StateMachineSystem
 
         public List<State> GetCurrentStateBranch()
         {
-            return Machine.GetCurrentStateBranch();
+            return Machine?.GetCurrentStateBranch();
         }
     }
     public abstract class StateMachineCore<TContext> : StateMachineCoreBase

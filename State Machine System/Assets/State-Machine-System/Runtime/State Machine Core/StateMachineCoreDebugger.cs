@@ -41,7 +41,7 @@ namespace M320.StateMachineSystem
             if (m_core == null) return NoStateMachineCore();
 
             List<State> currentStateBranch = m_core.GetCurrentStateBranch();
-            if (currentStateBranch.Count == 0) return NoCurrentStateBranch();
+            if (currentStateBranch == null || currentStateBranch.Count == 0) return NoCurrentStateBranch();
 
             string s = StateName(currentStateBranch[0]);
             string seperator = Separator();
