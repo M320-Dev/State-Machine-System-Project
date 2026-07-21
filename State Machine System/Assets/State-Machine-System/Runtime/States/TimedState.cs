@@ -31,6 +31,7 @@ namespace M320.StateMachineSystem
         protected override void OnReset()
         {
             base.OnReset();
+
             _isFinished = false;
         }
 
@@ -55,8 +56,12 @@ namespace M320.StateMachineSystem
 
         public TimedState(StateName name, float duration, UpdateMode mode = UpdateMode.Update)
             : base(name, duration, mode) { }
+        public TimedState(StateName name, UpdateMode mode = UpdateMode.Update)
+            : this(name, 0f, mode) { }
         public TimedState(float duration, UpdateMode mode = UpdateMode.Update)
-            : base(duration, mode) { }
+            : this("", duration, mode) { }
+        public TimedState(UpdateMode mode = UpdateMode.Update)
+            : this("", 0f, mode) { }
 
         #endregion
 

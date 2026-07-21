@@ -11,12 +11,7 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        #region Events
-
         public event ChangeHandler<State> StateChanged;
-        public event ChangeStateBranchHandler StateBranchChanged;
-
-        #endregion
 
         #region Constructors
 

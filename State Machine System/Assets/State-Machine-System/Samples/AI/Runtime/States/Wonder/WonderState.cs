@@ -20,9 +20,10 @@ namespace M320.StateMachineSystem.Samples.AI
         }
         private void OnStateChanged(State previous, State current) 
         {
-            if (current is TimedState timedState) 
+            if (current is TimedState timedState)
             {
-                timedState.Duration = RandomDuration();
+                if (timedState.IsNamed(StateEnum.Idle)) timedState.Duration = Context.RandomIdleDuration();
+                if (timedState.IsNamed(StateEnum.Move)) timedState.Duration = Context.RandomMoveDuration();
             }
         }
 
@@ -30,9 +31,17 @@ namespace M320.StateMachineSystem.Samples.AI
         {
             return new State[] 
             {
-                new TimedState(StateEnum.Idle, RandomDuration(), UpdateMode.Update),
-                new WonderMoveState(StateEnum.Move, RandomDuration(), UpdateMode.Update)
+                new StopMovingXState(StateEnum.Idle, Context.RandomIdleDuration(), UpdateMode.Update),
+                new MoveState(StateEnum.Move, Context.RandomMoveDuration(), UpdateMode.Update)
             };
+        }
+
+        protected override void OnEnter()
+        {
+            ChangeState(
+                Random.value < 0.5f 
+                ? StateEnum.Idle 
+                : StateEnum.Move);
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -45,11 +54,6 @@ namespace M320.StateMachineSystem.Samples.AI
             {
                 ChangeState(StateEnum.Idle);
             }
-        }
-
-        public float RandomDuration() 
-        {
-            return Random.Range(0.5f, 2f);
         }
     }
 }
