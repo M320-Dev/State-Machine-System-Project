@@ -8,14 +8,19 @@
   },
   "samples": [
     {
-        "displayName": "Player Controller",
-        "description": "Contains a PlayerCore for handling plauyer movement.",
-        "path": "Samples~/Player Controller"
+        "displayName": "1 - Simple - Timed",
+        "description": "Contains a TimedCore for handling an idle and a timed state. Click the 'Time' button to enter the 'Timed' state, afterwards, it enters the 'Idle'.",
+        "path": "Samples~/1 - Simple - Timed"
     },
     {
-        "displayName": "Timed",
-        "description": "Contains a TimedCore for handling an idle and a timed state.",
-        "path": "Samples~/Timed"
+        "displayName": "2 - Intermediate - Player Controller",
+        "description": "Contains a PlayerCore for handling player movement. Use the 'A' & 'D' to move around horizontally, and 'Space' to jump.",
+        "path": "Samples~/2 - Intermediate - Player Controller"
+    },
+    {
+        "displayName": "3 - Advanced - AI",
+        "description": "Contains an AICore for handling AI behaviour. 'Press' & 'Hold' to attract targets (white balls). The AI will chase the closest target within it's line of sight, otherwise, wonder around.",
+        "path": "Samples~/3 - Advanced - AI"
     }
   ]
 }
