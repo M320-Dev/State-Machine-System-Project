@@ -1,6 +1,6 @@
 {
   "name": "com.m320.state-machine-system",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "displayName": "State Machine System",
   "description": "FSM and HSM capable. Flexible, reusable, scalable.",
   "author": {
