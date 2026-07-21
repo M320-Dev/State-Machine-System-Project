@@ -83,7 +83,6 @@ namespace M320.StateMachineSystem.Samples.AI
 
         protected override AICore Context => this;
 
-
         protected override void Awake()
         {
             base.Awake();

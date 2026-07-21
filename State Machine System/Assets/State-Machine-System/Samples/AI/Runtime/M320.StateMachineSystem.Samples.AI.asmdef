@@ -2,7 +2,8 @@
     "name": "M320.StateMachineSystem.Samples.AI",
     "rootNamespace": "M320.StateMachineSystem.Samples.AI",
     "references": [
-        "GUID:0e13911e977f8c6499a77ad0b9627b6a"
+        "GUID:0e13911e977f8c6499a77ad0b9627b6a",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
