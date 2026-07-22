@@ -47,6 +47,15 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
         protected override PlayerCore Context => this;
 
+        protected override IReadOnlyList<State> ConstructStates()
+        {
+            return new State[]
+            {
+                new GroundedState(StateEnum.Grounded),
+                new AirboneState(StateEnum.Airbone)
+            };
+        }
+
         protected override void OnUpdate(float deltaTime)
         {
             _keyboard = Keyboard.current;
@@ -55,15 +64,6 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
             if (_isGrounded) ChangeState(StateEnum.Grounded);
             else ChangeState(StateEnum.Airbone);
-        }
-
-        protected override IReadOnlyList<State> ConstructStates()
-        {
-            return new State[] 
-            {
-                new GroundedState(StateEnum.Grounded),
-                new AirboneState(StateEnum.Airbone)
-            };
         }
 
         private void CheckIfGrounded()
