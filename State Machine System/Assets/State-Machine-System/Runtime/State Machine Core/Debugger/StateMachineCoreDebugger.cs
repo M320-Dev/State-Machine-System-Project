@@ -9,6 +9,8 @@ namespace M320.StateMachineSystem
     {
         private void OnDrawGizmos()
         {
+            if (!enabled) return;
+
             string currentStateBranchString = CurrentStateBranchString();
             GUIStyle style = Style();
             Handles.Label(transform.position, currentStateBranchString, style);
