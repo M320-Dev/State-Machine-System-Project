@@ -2,25 +2,25 @@
   "name": "com.m320.state-machine-system",
   "version": "0.1.0",
   "displayName": "State Machine System",
-  "description": "FSM and HSM capable. Flexible, reusable, scalable.",
+  "description": "A framework for implementing state-driven behaviours.",
   "author": {
     "name": "M_320"
   },
   "samples": [
     {
-        "displayName": "1 - Simple - Timed",
+        "displayName": "1. Simple - Timed",
         "description": "Contains a TimedCore for handling an idle and a timed state. Click the 'Time' button to enter the 'Timed' state, afterwards, it enters the 'Idle'.",
-        "path": "Samples~/1 - Simple - Timed"
+        "path": "Samples~/1. Simple - Timed"
     },
     {
-        "displayName": "2 - Intermediate - Player Controller",
+        "displayName": "2. Intermediate - Player Controller",
         "description": "Contains a PlayerCore for handling player movement. Use the 'A' & 'D' to move around horizontally, and 'Space' to jump.",
-        "path": "Samples~/2 - Intermediate - Player Controller"
+        "path": "Samples~/2. Intermediate - Player Controller"
     },
     {
-        "displayName": "3 - Advanced - AI",
+        "displayName": "3. Advanced - AI",
         "description": "Contains an AICore for handling AI behaviour. 'Press' & 'Hold' to attract targets (white balls). The AI will chase the closest target within it's line of sight, otherwise, wonder around.",
-        "path": "Samples~/3 - Advanced - AI"
+        "path": "Samples~/3. Advanced - AI"
     }
   ]
 }
