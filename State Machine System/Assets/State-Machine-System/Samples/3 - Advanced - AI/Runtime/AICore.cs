@@ -7,7 +7,7 @@ namespace M320.StateMachineSystem.Samples.AI
     {
         public enum StateEnum
         {
-            Wonder,
+            Wander,
             Chase
         }
 
@@ -32,7 +32,7 @@ namespace M320.StateMachineSystem.Samples.AI
         [Header("Settings - Detection Distance")]
         [SerializeField, Range(2f, 20f)] private float m_detectionRadius = 5f;
 
-        [Header("Settings - Durations - Wonder")]
+        [Header("Settings - Durations - Wander")]
         [SerializeField, Range(0.001f, 10f)] private float m_minIdle = 0.5f;
         [SerializeField, Range(0.001f, 10f)] private float m_maxIdle = 2f;
         [SerializeField, Range(0.001f, 10f)] private float m_minMove = 0.5f;
@@ -47,7 +47,7 @@ namespace M320.StateMachineSystem.Samples.AI
 
         #region Inspector Properties
 
-        // Settings - Durations - Wonder
+        // Settings - Durations - Wander
         public float minIdle => m_minIdle;
         public float maxIdle => m_maxIdle;
         public float minMove => m_minMove;
@@ -94,7 +94,7 @@ namespace M320.StateMachineSystem.Samples.AI
         {
             return new State[]
             {
-                new WonderState(StateEnum.Wonder),
+                new WanderState(StateEnum.Wander),
                 new ChaseState(StateEnum.Chase)
             };
         }
@@ -110,8 +110,8 @@ namespace M320.StateMachineSystem.Samples.AI
                 _closestVisibleTarget != null && 
                 m_collider.OverlapPoint(_closestVisibleTarget.transform.position);
 
-            if (_closestVisibleTarget && CurrentState.IsNamed(StateEnum.Wonder)) ChangeState(StateEnum.Chase);
-            else ChangeState(StateEnum.Wonder);
+            if (_closestVisibleTarget && CurrentState.IsNamed(StateEnum.Wander)) ChangeState(StateEnum.Chase);
+            else ChangeState(StateEnum.Wander);
         }
 
         #region Checks
@@ -144,7 +144,7 @@ namespace M320.StateMachineSystem.Samples.AI
 
         private float MoveSpeed()
         {
-            if (CurrentState.IsNamed(StateEnum.Wonder)) return m_wonderMoveSpeed;
+            if (CurrentState.IsNamed(StateEnum.Wander)) return m_wonderMoveSpeed;
             else if (CurrentState.IsNamed(StateEnum.Chase)) return m_chaseMoveSpeed;
             return 0f;
         }

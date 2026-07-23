@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace M320.StateMachineSystem.Samples.AI
 {
-    public sealed class WonderState : HierarchicalState<AICore>
+    public sealed class WanderState : HierarchicalState<AICore>
     {
         public enum StateEnum 
         {
@@ -11,8 +11,8 @@ namespace M320.StateMachineSystem.Samples.AI
             Move
         }
 
-        public WonderState(StateName name) : base(name) => Suscribe();
-        public WonderState() : base() => Suscribe();
+        public WanderState(StateName name) : base(name) => Suscribe();
+        public WanderState() : base() => Suscribe();
 
         private void Suscribe() 
         {

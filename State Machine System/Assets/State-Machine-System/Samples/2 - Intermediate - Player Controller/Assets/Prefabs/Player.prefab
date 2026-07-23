@@ -48,7 +48,7 @@ MonoBehaviour:
   m_separator: =>
   m_separatorColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stateNameColor: {r: 1, g: 1, b: 1, a: 1}
-  m_warningColor: {r: 1, g: 0, b: 0, a: 1}
+  m_errorColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2978217632384276814
 GameObject:
   m_ObjectHideFlags: 0
