@@ -22,14 +22,23 @@ namespace M320.StateMachineSystem.Samples.AI
         public ChaseState(StateName name) : base(name) { }
         public ChaseState() : base() { }
 
+        #region States
+
+        public StopMovingXState Alerted { get; private set; }
+        public PursueState Pursue { get; private set; }
+        public StopMovingXState Failed { get; private set; }
+        public StopMovingXState Succeeded { get; private set; }
+
+        #endregion
+
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                new StopMovingXState(StateEnum.Alerted, Context.alerted),
-                new PursueState(StateEnum.Pursue),
-                new StopMovingXState(StateEnum.Failed, Context.failed),
-                new StopMovingXState(StateEnum.Succeeded, Context.succeeded),
+                Alerted = new(StateEnum.Alerted, Context.alerted),
+                Pursue = new(StateEnum.Pursue),
+                Failed = new(StateEnum.Failed, Context.failed),
+                Succeeded = new(StateEnum.Succeeded, Context.succeeded),
             };
         }
 
@@ -53,28 +62,27 @@ namespace M320.StateMachineSystem.Samples.AI
 
         private void TryChangeState() 
         {
-            if (CurrentState.IsNamed(StateEnum.Alerted))
+            if (CurrentState == Alerted)
             {
-                ChangeState(StateEnum.Pursue);
+                ChangeState(Pursue);
             }
-            else if (CurrentState.IsNamed(StateEnum.Pursue))
+            else if (CurrentState == Pursue)
             {
                 if (Context.isOverClosestVisibleTarget)
                 {
                     Context.DisableClosestVisibleTarget();
 
-                    ChangeState(StateEnum.Succeeded);
+                    ChangeState(Succeeded);
                 }
                 else if (!Context.seeingClosestVisibleTarget)
                 {
-                    ChangeState(StateEnum.Failed);
+                    ChangeState(Failed);
                 }
             }
         }
         private void TryFinish() 
         {
-            if (CurrentState.IsNamed(StateEnum.Failed) ||
-                CurrentState.IsNamed(StateEnum.Succeeded))
+            if (CurrentState == Failed || CurrentState == Succeeded)
             {
                 var finishableState = (IFinishable)CurrentState;
                 if (finishableState.IsFinished) _isFinished = true;

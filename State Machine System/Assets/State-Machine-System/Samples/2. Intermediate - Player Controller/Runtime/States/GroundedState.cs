@@ -13,12 +13,19 @@ namespace M320.StateMachineSystem.Samples.PlayerController
         public GroundedState(StateName name) : base(name) { }
         public GroundedState() : base() { }
 
+        #region States
+
+        public State Idle { get; private set; }
+        public State Move { get; private set; }
+
+        #endregion
+
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                new(StateEnum.Idle),
-                new(StateEnum.Move)
+                Idle = new(StateEnum.Idle),
+                Move = new(StateEnum.Move)
             };
         }
 
@@ -26,8 +33,8 @@ namespace M320.StateMachineSystem.Samples.PlayerController
         {
             Context.TryJump();
 
-            if (Mathf.Abs(Context.rigidbody2D.linearVelocityX) <= 0.01f) ChangeState(StateEnum.Idle);
-            else ChangeState(StateEnum.Move);
+            if (Mathf.Abs(Context.rigidbody2D.linearVelocityX) <= 0.01f) ChangeState(Idle);
+            else ChangeState(Move);
         }
 
         protected override void OnFixedUpdate(float fixedDeltaTime)

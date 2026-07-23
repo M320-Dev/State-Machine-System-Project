@@ -20,6 +20,13 @@ namespace M320.StateMachineSystem.Samples.Timed
 
         #endregion
 
+        #region States
+
+        public State Idle { get; private set; }
+        public TimedState Timed { get; private set; }
+
+        #endregion
+
         private bool _buttonClickFlag;
 
         #region Subscription
@@ -44,22 +51,22 @@ namespace M320.StateMachineSystem.Samples.Timed
         {
             return new State[]
             {
-                new(StateEnum.Idle),
-                new TimedState(StateEnum.Timed, m_timedDuration, m_mode)
+                Idle = new(StateEnum.Idle),
+                Timed = new(StateEnum.Timed, m_timedDuration, m_mode)
             };
         }
 
         protected override void OnUpdate(float deltaTime)
         {
-            if (CurrentState.IsNamed(StateEnum.Idle))
+            if (CurrentState == Idle)
             {
                 if (!_buttonClickFlag) return;
 
-                ChangeState(StateEnum.Timed);
+                ChangeState(Timed);
             }
-            else if (CurrentState.IsNamed(StateEnum.Timed))
+            else if (CurrentState == Timed)
             {
-                ChangeState(StateEnum.Idle);
+                ChangeState(Idle);
             }
 
             _buttonClickFlag = false;

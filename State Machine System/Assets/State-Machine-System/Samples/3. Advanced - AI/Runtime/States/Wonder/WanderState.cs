@@ -14,6 +14,13 @@ namespace M320.StateMachineSystem.Samples.AI
         public WanderState(StateName name) : base(name) => Suscribe();
         public WanderState() : base() => Suscribe();
 
+        #region States
+
+        public StopMovingXState Idle { get; private set; }
+        public MoveState Move { get; private set; }
+
+        #endregion
+
         private void Suscribe() 
         {
             StateChanged += OnStateChanged;
@@ -22,8 +29,8 @@ namespace M320.StateMachineSystem.Samples.AI
         {
             if (current is TimedState timedState)
             {
-                if (timedState.IsNamed(StateEnum.Idle)) timedState.Duration = Context.RandomIdleDuration();
-                if (timedState.IsNamed(StateEnum.Move)) timedState.Duration = Context.RandomMoveDuration();
+                if (timedState == Idle) timedState.Duration = Context.RandomIdleDuration();
+                else if (timedState == Move) timedState.Duration = Context.RandomMoveDuration();
             }
         }
 
@@ -31,29 +38,20 @@ namespace M320.StateMachineSystem.Samples.AI
         {
             return new State[] 
             {
-                new StopMovingXState(StateEnum.Idle, Context.RandomIdleDuration(), UpdateMode.Update),
-                new MoveState(StateEnum.Move, Context.RandomMoveDuration(), UpdateMode.Update)
+                Idle = new StopMovingXState(StateEnum.Idle, Context.RandomIdleDuration(), UpdateMode.Update),
+                Move = new MoveState(StateEnum.Move, Context.RandomMoveDuration(), UpdateMode.Update)
             };
         }
 
         protected override void OnEnter()
         {
-            ChangeState(
-                Random.value < 0.5f 
-                ? StateEnum.Idle 
-                : StateEnum.Move);
+            ChangeState(Random.value < 0.5f ? Idle : Move);
         }
 
         protected override void OnUpdate(float deltaTime)
         {
-            if (CurrentState.IsNamed(StateEnum.Idle))
-            {
-                ChangeState(StateEnum.Move);
-            }
-            else if (CurrentState.IsNamed(StateEnum.Move))
-            {
-                ChangeState(StateEnum.Idle);
-            }
+            if (CurrentState == Idle) ChangeState(Move);
+            else if (CurrentState == Move) ChangeState(Idle);
         }
     }
 }

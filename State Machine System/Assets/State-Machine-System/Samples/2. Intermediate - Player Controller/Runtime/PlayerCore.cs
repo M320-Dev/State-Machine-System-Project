@@ -45,14 +45,21 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
         #endregion
 
+        #region States
+
+        public GroundedState Grounded { get; private set; }
+        public AirboneState Airbone { get; private set; }
+
+        #endregion
+
         protected override PlayerCore Context => this;
 
         protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                new GroundedState(StateEnum.Grounded),
-                new AirboneState(StateEnum.Airbone)
+                Grounded = new(StateEnum.Grounded),
+                Airbone = new(StateEnum.Airbone)
             };
         }
 
@@ -62,8 +69,8 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
             CheckIfGrounded();
 
-            if (_isGrounded) ChangeState(StateEnum.Grounded);
-            else ChangeState(StateEnum.Airbone);
+            if (_isGrounded) ChangeState(Grounded);
+            else ChangeState(Airbone);
         }
 
         private void CheckIfGrounded()

@@ -81,6 +81,13 @@ namespace M320.StateMachineSystem.Samples.AI
 
         #endregion
 
+        #region States
+
+        public WanderState Wander { get; private set; }
+        public ChaseState Chase { get; private set; }
+
+        #endregion
+
         protected override AICore Context => this;
 
         protected override void Awake()
@@ -94,8 +101,8 @@ namespace M320.StateMachineSystem.Samples.AI
         {
             return new State[]
             {
-                new WanderState(StateEnum.Wander),
-                new ChaseState(StateEnum.Chase)
+                Wander = new(StateEnum.Wander),
+                Chase = new(StateEnum.Chase)
             };
         }
 
@@ -110,8 +117,8 @@ namespace M320.StateMachineSystem.Samples.AI
                 _closestVisibleTarget != null && 
                 m_collider.OverlapPoint(_closestVisibleTarget.transform.position);
 
-            if (_closestVisibleTarget && CurrentState.IsNamed(StateEnum.Wander)) ChangeState(StateEnum.Chase);
-            else ChangeState(StateEnum.Wander);
+            if (_closestVisibleTarget && CurrentState == Wander) ChangeState(Chase);
+            else ChangeState(Wander);
         }
 
         #region Checks
@@ -144,8 +151,8 @@ namespace M320.StateMachineSystem.Samples.AI
 
         private float MoveSpeed()
         {
-            if (CurrentState.IsNamed(StateEnum.Wander)) return m_wonderMoveSpeed;
-            else if (CurrentState.IsNamed(StateEnum.Chase)) return m_chaseMoveSpeed;
+            if (CurrentState == Wander) return m_wonderMoveSpeed;
+            else if (CurrentState == Chase) return m_chaseMoveSpeed;
             return 0f;
         }
 

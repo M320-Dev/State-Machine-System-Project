@@ -1,4 +1,3 @@
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,11 +49,11 @@ namespace M320.StateMachineSystem.Samples.Timed.UI
 
             m_stateNameTMP.text = current.Name;
 
-            if (current.IsNamed(TimedCore.StateEnum.Idle))
+            if (current == m_core.Idle)
             {
                 m_silder.value = 0f;
             }
-            else if (current.IsNamed(TimedCore.StateEnum.Timed))
+            else if (current == m_core.Timed)
             {
                 TimedState timedState = (TimedState)current;
 
@@ -75,7 +74,7 @@ namespace M320.StateMachineSystem.Samples.Timed.UI
         {
             if (m_core == null || m_silder == null) return;
 
-            if (m_core.CurrentState.IsNamed(TimedCore.StateEnum.Timed))
+            if (m_core.CurrentState == m_core.Timed)
             {
                 TimedState timedState = (TimedState)m_core.CurrentState;
 
