@@ -18,25 +18,30 @@ A framework for implementing state-driven behaviours.
 
 ## Samples
 
-### 1 - Simple - Timed
+### 1. Simple - Timed
 
-<img width="1570" height="942" alt="State Machine System v0 1 0 - Sample - 1 - Simple - Timed" src="https://github.com/user-attachments/assets/e3d09fe1-81cf-46c0-8e31-2875795cb12f" />
+> Idle <-> Timed
 
----
-
-### 2 - Intermediate - Player Controller
-
-<img width="1570" height="942" alt="State Machine System v0 1 0 - Sample - 2 - Intermediate - Player Controller" src="https://github.com/user-attachments/assets/cd800929-f14f-4c09-a5c4-8f4502694526" />
+<img width="1570" height="942" alt="Timed" src="https://github.com/user-attachments/assets/e3d09fe1-81cf-46c0-8e31-2875795cb12f" />
 
 ---
 
-### 3 - Advanced - AI
+### 2. Intermediate - Player Controller
 
-#### Wondering
+> Grounded => Idle <-> Move
+> Airborne => Rise <-> Fall
 
-> Wonder => Idle <-> Move
+<img width="1570" height="942" alt="Player Controller" src="https://github.com/user-attachments/assets/cd800929-f14f-4c09-a5c4-8f4502694526" />
 
-<img width="1570" height="942" alt="Wondering AI" src="https://github.com/user-attachments/assets/3c766c61-ed45-4bcf-8886-7e414e7742f9" />
+---
+
+### 3. Advanced - AI
+
+#### Wandering
+
+> Wander => Idle <-> Move
+
+<img width="1570" height="942" alt="Wandering AI" src="https://github.com/user-attachments/assets/3c766c61-ed45-4bcf-8886-7e414e7742f9" />
 
 #### Succeeded Chase
 
