@@ -16,6 +16,42 @@ A framework for implementing state-driven behaviours.
 
 ---
 
+## Samples
+
+### 1 - Simple - Timed
+
+<img width="1570" height="942" alt="State Machine System v0 1 0 - Sample - 1 - Simple - Timed" src="https://github.com/user-attachments/assets/e3d09fe1-81cf-46c0-8e31-2875795cb12f" />
+
+---
+
+### 2 - Intermediate - Player Controller
+
+<img width="1570" height="942" alt="State Machine System v0 1 0 - Sample - 2 - Intermediate - Player Controller" src="https://github.com/user-attachments/assets/cd800929-f14f-4c09-a5c4-8f4502694526" />
+
+---
+
+### 3 - Advanced - AI
+
+#### Wondering
+
+> Wonder => Idle <-> Move
+
+<img width="1570" height="942" alt="Wondering AI" src="https://github.com/user-attachments/assets/3c766c61-ed45-4bcf-8886-7e414e7742f9" />
+
+#### Succeeded Chase
+
+> Chase => Alerted -> Pursue -> Succeeded 
+
+<img width="1570" height="942" alt="AI Succeeded Chase" src="https://github.com/user-attachments/assets/2ba97411-809a-4fd1-8bf2-681dd5cb7b8e" />
+
+#### Failed Chase
+
+> Chase => Alerted -> Pursue -> Failed 
+
+<img width="1570" height="942" alt="AI Failed Chase" src="https://github.com/user-attachments/assets/712b8675-9e0a-46c6-8804-8854f8089e62" />
+
+---
+
 ## Diagrams
 
 ### System Architecture
