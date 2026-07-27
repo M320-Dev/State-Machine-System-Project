@@ -6,7 +6,7 @@ namespace M320.StateMachineSystem
     {
         #region Fields
 
-        protected readonly StateDictionary StateDictionary = new();
+        protected readonly StateDictionary<State> StateDictionary = new();
         protected readonly StateMachine Machine = new();
 
         #endregion

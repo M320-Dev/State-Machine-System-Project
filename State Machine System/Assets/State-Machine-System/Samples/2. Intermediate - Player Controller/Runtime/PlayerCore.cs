@@ -63,6 +63,11 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             };
         }
 
+        protected override IEnumerable<StateDefinition> DefineStates()
+        {
+            return Array.Empty<StateDefinition>();
+        }
+
         protected override void OnUpdate(float deltaTime)
         {
             _keyboard = Keyboard.current;

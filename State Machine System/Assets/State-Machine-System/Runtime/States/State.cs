@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace M320.StateMachineSystem
 {
-    public class State
+    public class State : IStateIdentifier
     {
-        public readonly string Name;
+        public string Name { get; }
 
         #region Events
 

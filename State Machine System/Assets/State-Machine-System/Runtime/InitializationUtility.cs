@@ -4,7 +4,7 @@ namespace M320.StateMachineSystem
 {
     public static class InitializationUtility
     {
-        public static void SetupStates(IReadOnlyList<State> states, object context, StateDictionary stateDictionary, HierarchicalState parentState = null)
+        public static void SetupStates(IReadOnlyList<State> states, object context, StateDictionary<State> stateDictionary, HierarchicalState parentState = null)
         {
             foreach (var state in states)
             {

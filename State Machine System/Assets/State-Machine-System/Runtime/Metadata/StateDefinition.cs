@@ -2,10 +2,12 @@ using System;
 
 namespace M320.StateMachineSystem
 {
-    public class StateDefinition
+    public class StateDefinition : IStateIdentifier
     {
         public readonly Type type;
         public readonly StateParameters parameters;
+
+        public string Name => parameters.name;
 
         public HierarchicalStateDefinition Parent { get; internal set; }
 

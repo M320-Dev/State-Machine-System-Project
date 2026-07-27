@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,6 +55,11 @@ namespace M320.StateMachineSystem.Samples.Timed
                 Idle = new(StateEnum.Idle),
                 Timed = new(StateEnum.Timed, m_timedDuration, m_mode)
             };
+        }
+
+        protected override IEnumerable<StateDefinition> DefineStates()
+        {
+            return Array.Empty<StateDefinition>();
         }
 
         protected override void OnUpdate(float deltaTime)

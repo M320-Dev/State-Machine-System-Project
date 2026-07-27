@@ -2,15 +2,21 @@ using System.Collections.Generic;
 
 namespace M320.StateMachineSystem
 {
-    public sealed class StateDictionary
+    public interface IStateIdentifier 
     {
-        private readonly Dictionary<string, State> _dictionary = new();
+        string Name { get; }
+    }
 
-        public State this[StateName name] => _dictionary[name];
+    public sealed class StateDictionary<TState>
+        where TState : IStateIdentifier
+    {
+        private readonly Dictionary<string, TState> _dictionary = new();
 
-        public IReadOnlyCollection<State> States => _dictionary.Values;
+        public TState this[StateName name] => _dictionary[name];
 
-        public void Add(State state)
+        public IReadOnlyCollection<TState> States => _dictionary.Values;
+
+        public void Add(TState state)
         {
             _dictionary.Add(state.Name, state);
         }

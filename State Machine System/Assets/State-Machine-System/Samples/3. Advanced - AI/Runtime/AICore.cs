@@ -106,6 +106,11 @@ namespace M320.StateMachineSystem.Samples.AI
             };
         }
 
+        protected override IEnumerable<StateDefinition> DefineStates()
+        {
+            return System.Array.Empty<StateDefinition>();
+        }
+
         protected override void OnUpdate(float deltaTime)
         {
             CheckIfGrounded();

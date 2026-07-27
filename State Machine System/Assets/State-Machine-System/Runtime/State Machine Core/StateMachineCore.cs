@@ -8,7 +8,8 @@ namespace M320.StateMachineSystem
     {
         [SerializeField] private string m_initialLeafState;
 
-        protected readonly StateDictionary StateDictionary = new();
+        protected readonly StateDictionary<State> StateDictionary = new();
+        protected readonly StateDictionary<StateDefinition> StateDefinitionDictionary;
 
         public event ChangeHandler<State> StateChanged;
 
@@ -22,7 +23,25 @@ namespace M320.StateMachineSystem
 
         #endregion
 
+        #region Get State/Definition
+
+        public State GetState(StateName name)
+        {
+            return StateDictionary[name];
+        }
+        public StateDefinition GetStateDefinition(StateName name)
+        {
+            return StateDefinitionDictionary[name];
+        }
+
+        #endregion
+
         #region Initialization
+
+        protected virtual void OnValidate() 
+        {
+            InitializeDefinitions();
+        }
 
         protected virtual void Awake()
         {
@@ -36,10 +55,13 @@ namespace M320.StateMachineSystem
         /// </returns>
         protected abstract State Initialize();
 
-        public State GetState(StateName name) 
+        protected virtual void InitializeDefinitions()
         {
-            return StateDictionary[name];
+            if (StateDefinitionDictionary != null) return;
+
+            StateInitialization.SetupDefinitions(DefineStates(), StateDefinitionDictionary);
         }
+        protected abstract IEnumerable<StateDefinition> DefineStates();
 
         #endregion
 
@@ -132,7 +154,6 @@ namespace M320.StateMachineSystem
 
             return ancestryBranch.Count > 0 ? ancestryBranch[0] : leaf;
         }
-
         protected abstract IReadOnlyList<State> ConstructStates();
 
         #endregion
