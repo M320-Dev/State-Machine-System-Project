@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace M320.StateMachineSystem.Samples.AI
 {
     public sealed class ChaseState : HierarchicalState<AICore>, IFinishable
@@ -19,8 +17,7 @@ namespace M320.StateMachineSystem.Samples.AI
             _isFinished = isFinished;
         }
 
-        public ChaseState(StateName name) : base(name) { }
-        public ChaseState() : base() { }
+        public ChaseState(HierarchicalStateDefinition definition) : base(definition) { }
 
         #region States
 
@@ -31,16 +28,16 @@ namespace M320.StateMachineSystem.Samples.AI
 
         #endregion
 
-        protected override IReadOnlyList<State> ConstructStates()
+        /*protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                Alerted = new(StateEnum.Alerted, Context.alerted),
-                Pursue = new(StateEnum.Pursue),
-                Failed = new(StateEnum.Failed, Context.failed),
-                Succeeded = new(StateEnum.Succeeded, Context.succeeded),
+                Alerted = new(new(StateEnum.Alerted, Context.alerted)),
+                Pursue = new(new(StateEnum.Pursue)),
+                Failed = new(new(StateEnum.Failed, Context.failed)),
+                Succeeded = new(new(StateEnum.Succeeded, Context.succeeded)),
             };
-        }
+        }*/
 
         protected override void OnReset()
         {

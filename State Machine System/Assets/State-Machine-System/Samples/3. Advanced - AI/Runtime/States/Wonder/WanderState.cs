@@ -11,8 +11,7 @@ namespace M320.StateMachineSystem.Samples.AI
             Move
         }
 
-        public WanderState(StateName name) : base(name) => Suscribe();
-        public WanderState() : base() => Suscribe();
+        public WanderState(HierarchicalStateDefinition definition) : base(definition) => Suscribe();
 
         #region States
 
@@ -34,14 +33,14 @@ namespace M320.StateMachineSystem.Samples.AI
             }
         }
 
-        protected override IReadOnlyList<State> ConstructStates()
+       /* protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[] 
             {
-                Idle = new StopMovingXState(StateEnum.Idle, Context.RandomIdleDuration(), UpdateMode.Update),
-                Move = new MoveState(StateEnum.Move, Context.RandomMoveDuration(), UpdateMode.Update)
+                Idle = new StopMovingXState(new(StateEnum.Idle, Context.RandomIdleDuration())),
+                Move = new MoveState(new(StateEnum.Move, Context.RandomMoveDuration()))
             };
-        }
+        }*/
 
         protected override void OnEnter()
         {

@@ -10,8 +10,7 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             Idle,
             Move
         }
-        public GroundedState(StateName name) : base(name) { }
-        public GroundedState() : base() { }
+        public GroundedState(HierarchicalStateDefinition definition) : base(definition) { }
 
         #region States
 
@@ -20,14 +19,14 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
         #endregion
 
-        protected override IReadOnlyList<State> ConstructStates()
+        /*protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                Idle = new(StateEnum.Idle),
-                Move = new(StateEnum.Move)
+                Idle = new(new(StateEnum.Idle)),
+                Move = new(new(StateEnum.Move))
             };
-        }
+        }*/
 
         protected override void OnUpdate(float deltaTime)
         {

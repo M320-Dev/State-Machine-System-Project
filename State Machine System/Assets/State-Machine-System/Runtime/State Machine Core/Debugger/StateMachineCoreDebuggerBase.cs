@@ -10,7 +10,7 @@ namespace M320.StateMachineSystem
         #region Inspector Fields
 
         [Header("Component")]
-        [SerializeField] private StateMachineCoreBase m_core;
+        [SerializeField] private StateMachineCore m_core;
 
         [Header("Style Settings")]
         [SerializeField] private string m_separator = "=>";

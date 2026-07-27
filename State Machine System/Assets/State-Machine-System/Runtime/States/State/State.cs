@@ -6,7 +6,11 @@ namespace M320.StateMachineSystem
 {
     public class State : IStateIdentifier
     {
-        public string Name { get; }
+        #region Fields
+
+        public readonly StateDefinition Definition;
+
+        #endregion
 
         #region Events
 
@@ -17,30 +21,32 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        #region Constructors
-
-        public State(StateName name)
+        public State(StateDefinition definition)
         {
-            Name = name.IsNullOrWhiteSpace ? TypeName() : name;
-        }
-        public State()
-        {
-            Name = TypeName();
+            Definition = definition;
         }
 
-        private string TypeName() 
+        #region Field Properties
+
+        public StateParameters Parameters => Definition.parameters;
+        public string Name => Parameters.name;
+
+        #endregion
+
+        #region Context
+
+        private object _context;
+        public object Context => _context;
+        internal virtual void SetContext(object context)
         {
-            return GetType().Name;
+            _context = context;
         }
 
         #endregion
 
-        private object _context;
-
         #region Properties
 
         public HierarchicalState Parent { get; internal set; }
-        public object Context => _context;
 
         public float StartTime { get; private set; }
         public float ElapsedTime { get; private set; }
@@ -71,11 +77,6 @@ namespace M320.StateMachineSystem
         #endregion
 
         #region Methods
-
-        internal virtual void SetContext(object context)
-        {
-            _context = context;
-        }
 
         #region Enter
 
@@ -169,8 +170,7 @@ namespace M320.StateMachineSystem
     {
         new protected TContext Context { get; private set; }
 
-        public State(StateName name) : base(name) { }
-        public State() : base() { }
+        public State(StateDefinition definition) : base(definition) { }
 
         internal override void SetContext(object context)
         {

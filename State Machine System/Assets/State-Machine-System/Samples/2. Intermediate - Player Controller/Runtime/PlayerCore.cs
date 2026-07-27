@@ -54,18 +54,13 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
         protected override PlayerCore Context => this;
 
-        protected override IReadOnlyList<State> ConstructStates()
-        {
-            return new State[]
-            {
-                Grounded = new(StateEnum.Grounded),
-                Airbone = new(StateEnum.Airbone)
-            };
-        }
-
         protected override IEnumerable<StateDefinition> DefineStates()
         {
-            return Array.Empty<StateDefinition>();
+            return new StateDefinition[] 
+            {
+                StateDefinition.Create<State>(new(StateEnum.Grounded)),
+                StateDefinition.Create<State>(new(StateEnum.Airbone))
+            };
         }
 
         protected override void OnUpdate(float deltaTime)

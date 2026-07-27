@@ -4,7 +4,7 @@ namespace M320.StateMachineSystem
     {
         public readonly string name;
 
-        public StateParameters(string name) 
+        public StateParameters(StateName name) 
         {
             this.name = name;
         }

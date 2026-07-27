@@ -4,17 +4,20 @@ using UnityEngine;
 
 namespace M320.StateMachineSystem
 {
-    public abstract class StateMachineCoreBase : MonoBehaviour
+    public abstract class StateMachineCore : MonoBehaviour
     {
         [SerializeField] private string m_initialLeafState;
 
         protected readonly StateDictionary<State> StateDictionary = new();
-        protected readonly StateDictionary<StateDefinition> StateDefinitionDictionary;
+        protected StateDictionary<StateDefinition> StateDefinitionDictionary { get; private set; }
 
         public event ChangeHandler<State> StateChanged;
 
         #region Properties
 
+        protected abstract object ContextObject { get; }
+
+        public IReadOnlyCollection<StateDefinition> Definitions => StateDefinitionDictionary.States;
         public IReadOnlyCollection<State> States => StateDictionary.States;
 
         protected StateMachine Machine { get; private set; }
@@ -45,7 +48,7 @@ namespace M320.StateMachineSystem
 
         protected virtual void Awake()
         {
-            State initialState = Initialize();
+            State initialState = InitializeInstances();
             Machine = new(initialState);
             Machine.StateChanged += (p, c) => StateChanged?.Invoke(p, c);
         }
@@ -53,13 +56,23 @@ namespace M320.StateMachineSystem
         /// <returns>
         /// Initial State
         /// </returns>
-        protected abstract State Initialize();
+        protected virtual State InitializeInstances() 
+        {
+            StateInitializer.SetupInstances(Definitions, ContextObject, StateDictionary);
+
+            var (ancestryBranch, leaf) = GetInitialStateBranch();
+            StateInitializer.SetupInitialStateBranch(ancestryBranch, leaf);
+
+            return ancestryBranch.Count > 0 ? ancestryBranch[0] : leaf;
+        }
 
         protected virtual void InitializeDefinitions()
         {
             if (StateDefinitionDictionary != null) return;
 
-            StateInitialization.SetupDefinitions(DefineStates(), StateDefinitionDictionary);
+            StateDefinitionDictionary = new();
+
+            StateInitializer.SetupDefinitions(DefineStates(), StateDefinitionDictionary);
         }
         protected abstract IEnumerable<StateDefinition> DefineStates();
 
@@ -139,24 +152,10 @@ namespace M320.StateMachineSystem
             return Machine?.GetCurrentStateBranch();
         }
     }
-    public abstract class StateMachineCore<TContext> : StateMachineCoreBase
+    public abstract class StateMachineCore<TContext> : StateMachineCore
     {
+        protected override object ContextObject => Context;
         protected abstract TContext Context { get; }
-
-        #region Initialization
-
-        protected override State Initialize()
-        {
-            InitializationUtility.SetupStates(ConstructStates(), Context, StateDictionary);
-
-            var (ancestryBranch, leaf) = GetInitialStateBranch();
-            InitializationUtility.SetupInitialStateBranch(ancestryBranch, leaf);
-
-            return ancestryBranch.Count > 0 ? ancestryBranch[0] : leaf;
-        }
-        protected abstract IReadOnlyList<State> ConstructStates();
-
-        #endregion
     }
     public abstract class ContextlessStateMachineCore : StateMachineCore<EmptyContext>
     {

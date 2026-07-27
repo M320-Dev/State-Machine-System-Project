@@ -10,8 +10,7 @@ namespace M320.StateMachineSystem.Samples.PlayerController
             Fall
         }
 
-        public AirboneState(StateName name) : base(name) { }
-        public AirboneState() : base() { }
+        public AirboneState(HierarchicalStateDefinition definition) : base(definition) { }
 
         #region States
 
@@ -20,14 +19,14 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
         #endregion
 
-        protected override IReadOnlyList<State> ConstructStates()
+/*        protected override IReadOnlyList<State> ConstructStates()
         {
             return new State[]
             {
-                Rise = new(StateEnum.Rise),
-                Fall = new(StateEnum.Fall)
+                Rise = new(new(StateEnum.Rise)),
+                Fall = new(new(StateEnum.Fall))
             };
-        }
+        }*/
 
         protected override void OnUpdate(float deltaTime)
         {

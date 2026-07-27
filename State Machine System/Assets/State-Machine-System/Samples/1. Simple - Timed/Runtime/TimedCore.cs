@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,18 +47,13 @@ namespace M320.StateMachineSystem.Samples.Timed
 
         #endregion
 
-        protected override IReadOnlyList<State> ConstructStates()
-        {
-            return new State[]
-            {
-                Idle = new(StateEnum.Idle),
-                Timed = new(StateEnum.Timed, m_timedDuration, m_mode)
-            };
-        }
-
         protected override IEnumerable<StateDefinition> DefineStates()
         {
-            return Array.Empty<StateDefinition>();
+            return new StateDefinition[]
+            {
+                StateDefinition.Create<State>(new(StateEnum.Idle)),
+                StateDefinition.Create<TimedState>(new TimedStateParameters(StateEnum.Timed, m_timedDuration, m_mode))
+            };
         }
 
         protected override void OnUpdate(float deltaTime)

@@ -7,12 +7,14 @@ namespace M320.StateMachineSystem
     {
         protected readonly StateDictionary<StateDefinition> StateDefinitionDictionary = new();
 
+        public IReadOnlyCollection<StateDefinition> Definitions => StateDefinitionDictionary.States;
+
         protected HierarchicalStateDefinition(Type type, StateParameters parameters)
             : base(type, parameters) { }
 
         internal void SetupDefinitions()
         {
-            StateInitialization.SetupDefinitions(DefineStates(), StateDefinitionDictionary, this);
+            StateInitializer.SetupDefinitions(DefineStates(), StateDefinitionDictionary, this);
         }
         protected abstract IEnumerable<StateDefinition> DefineStates();
     }

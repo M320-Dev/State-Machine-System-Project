@@ -2,10 +2,18 @@ using System;
 
 namespace M320.StateMachineSystem
 {
-    public interface ITimed : IFinishable
+    public interface IReadOnlyTimed : IFinishable
     {
         float Duration { get; }
         UpdateMode Mode { get; }
+    }
+    public interface ITimed : IReadOnlyTimed
+    {
+        float IReadOnlyTimed.Duration => Duration;
+        UpdateMode IReadOnlyTimed.Mode => Mode;
+
+        new float Duration { get; set; }
+        new UpdateMode Mode { get; set; }
     }
 
     public static class ITimedExtension 
