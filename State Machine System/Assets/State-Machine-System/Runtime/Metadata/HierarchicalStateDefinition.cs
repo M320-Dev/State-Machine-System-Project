@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace M320.StateMachineSystem
 {
@@ -8,7 +7,6 @@ namespace M320.StateMachineSystem
     public abstract class HierarchicalStateDefinition : StateDefinition
     {
         private readonly StateDictionary<StateDefinition> _children = new();
-        [SerializeField] private StateDefinition[] children;
 
         public IReadOnlyCollection<StateDefinition> Children => _children.States;
 
@@ -17,18 +15,6 @@ namespace M320.StateMachineSystem
         internal void SetupChildren()
         {
             StateInitializer.SetupChildren(DefineChildren(), Context, _children, this);
-
-            var c = Children;
-            var enumerator = c.GetEnumerator();
-            int i = 0;
-
-            children = new StateDefinition[c.Count];
-
-            while (enumerator.MoveNext())
-            {
-                children[i] = enumerator.Current;
-                i++;
-            }
         }
         protected abstract IEnumerable<StateDefinition> DefineChildren();
     }

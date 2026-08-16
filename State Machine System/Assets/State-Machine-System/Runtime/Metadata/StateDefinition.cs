@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace M320.StateMachineSystem
 {
@@ -8,9 +7,7 @@ namespace M320.StateMachineSystem
     {
         public readonly Type type;
         public readonly StateParameters parameters;
-
-        [SerializeField] private string m_name;
-        public string Name => m_name;
+        public string Name => parameters.name;
 
         public HierarchicalStateDefinition Parent { get; internal set; }
 
@@ -25,13 +22,10 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        public StateDefinition Definition => this;
-
         protected StateDefinition(Type type, StateParameters parameters) 
         {
             this.type = type;
             this.parameters = parameters;
-            m_name = parameters.name;
         }
 
         public static StateDefinition Create<TState>(StateParameters parameters)

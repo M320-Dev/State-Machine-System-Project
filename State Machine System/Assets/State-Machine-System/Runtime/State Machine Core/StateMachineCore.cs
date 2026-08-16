@@ -39,19 +39,20 @@ namespace M320.StateMachineSystem
 
         protected virtual void OnValidate() 
         {
-            InitializeDefinitions();
+            InitializeDefinitions(true);
             DebugLogInitialBranchSelection();
         }
 
         protected virtual void Awake()
         {
-            InitializeDefinitions();
+            InitializeDefinitions(false);
             DebugLogInitialBranchSelection();
 
             InitializeInstances();
 
-            var definitions = m_initialStateBranch.Selection.Definitions;
-            State initialState = Children[definitions[0]];
+            var selectedIndexes = m_initialStateBranch.SelectedIndexes;
+            State initialState = Children[selectedIndexes[0]];
+            Debug.Log(initialState.Name);
 
             Machine = new(initialState);
             Machine.StateChanged += (p, c) => StateChanged?.Invoke(p, c);
@@ -61,9 +62,11 @@ namespace M320.StateMachineSystem
         {
             Debug.Log($"===== Initial Branch Selection =====");
 
-            for (int i = 0; i < m_initialStateBranch.Selection.Length; i++)
+            Debug.Log(m_initialStateBranch.SelectedIndexes.Length);
+
+            for (int i = 0; i < m_initialStateBranch.SelectedIndexes.Length; i++)
             {
-                Debug.Log($"{m_initialStateBranch.Selection.Definitions[i].Name} | {m_initialStateBranch.Selection.Indexes[i]}");
+                Debug.Log($"{i} | {m_initialStateBranch.SelectedIndexes[i]}");
             }
 
             Debug.Log($"====================================");
@@ -80,7 +83,7 @@ namespace M320.StateMachineSystem
             Debug.Log($"====================");
         }
 
-        protected virtual void InitializeDefinitions()
+        protected virtual void InitializeDefinitions(bool updateBranch)
         {
             if (ChildDefinitions != null) return;
 
@@ -88,7 +91,7 @@ namespace M320.StateMachineSystem
 
             StateInitializer.SetupChildren(DefineChildren(), ContextObject, ChildDefinitions);
 
-            m_initialStateBranch.Children = ChildrenArray();
+            if (updateBranch) m_initialStateBranch.Children = ChildrenArray();
         }
         protected abstract IEnumerable<StateDefinition> DefineChildren();
         private StateDefinition[] ChildrenArray()

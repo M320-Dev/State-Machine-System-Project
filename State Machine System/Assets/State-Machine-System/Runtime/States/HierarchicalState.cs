@@ -45,10 +45,6 @@ namespace M320.StateMachineSystem
         {
             SetInitialState(Children[name]);
         }
-        public void SetInitialState(StateDefinition definition)
-        {
-            SetInitialState(Children[definition]);
-        }
         public void SetInitialState(State initialState)
         {
             Machine.SetInitialState(initialState);

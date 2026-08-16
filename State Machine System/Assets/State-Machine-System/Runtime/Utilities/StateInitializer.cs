@@ -56,18 +56,18 @@ namespace M320.StateMachineSystem
         }*/
         internal static void SetupInitialStateBranch(InitialStateBranch initialStateBranch, StateDictionary<State> Children)
         {
-            var definitions = initialStateBranch.Selection.Definitions;
-            HierarchicalState ancestor = (HierarchicalState)Children[definitions[0]];
-            int length = definitions.Length - 1;
+            var selectedIndexes = initialStateBranch.SelectedIndexes;
+            HierarchicalState ancestor = (HierarchicalState)Children[selectedIndexes[0]];
+            int length = selectedIndexes.Length - 1;
 
             for (int i = 1; i < length; i++)
             {
-                var current = (HierarchicalState)Children[definitions[i]];
+                var current = (HierarchicalState)Children[selectedIndexes[i]];
                 ancestor.SetInitialState(current);
                 ancestor = current;
             }
 
-            State leaf = Children[definitions[^1]];
+            State leaf = Children[selectedIndexes[^1]];
             ancestor.SetInitialState(leaf);
         }
     }

@@ -119,12 +119,12 @@ namespace M320.StateMachineSystem.Editor
 
         private void UpdatePerservedSelection()
         {
-            _initialStateBranch.Selection = new(_entries.Length);
+            _initialStateBranch.SelectedIndexes = new int[_entries.Length];
 
             for (int i = 0; i < _entries.Length; i++)
             {
                 var entry = _entries[i];
-                _initialStateBranch.Selection.Set(i, entry.SelectedDefinition, entry.SelectedIndex);
+                _initialStateBranch.SelectedIndexes[i] = entry.SelectedIndex;
             }
         }
 
@@ -137,10 +137,10 @@ namespace M320.StateMachineSystem.Editor
         private bool TryGetPreservedIndex(int index, out int selectedIndex)
         {
             selectedIndex = -1;
-            if (_initialStateBranch.Selection == null) return false;
-            if (index < 0 || index >= _initialStateBranch.Selection.Length) return false;
+            if (_initialStateBranch.SelectedIndexes == null) return false;
+            if (index < 0 || index >= _initialStateBranch.SelectedIndexes.Length) return false;
 
-            selectedIndex = _initialStateBranch.Selection.Indexes[index];
+            selectedIndex = _initialStateBranch.SelectedIndexes[index];
             return true;
         }
 
@@ -180,6 +180,7 @@ namespace M320.StateMachineSystem.Editor
             if (_initialized) return;
 
             Reinitialize(label);
+            UpdatePerservedSelection();
 
             _initialized = true;
         }
@@ -222,30 +223,6 @@ namespace M320.StateMachineSystem.Editor
 
         #region To Options
 
-        private static GUIContent[] ToOptions(HierarchicalStateDefinition definition) 
-        {
-            return ToOptions(definition.Children);
-        }
-        private static GUIContent[] ToOptions(HierarchicalStateDefinition definition, int selectedIndex, out StateDefinition selectedDefinition)
-        {
-            return ToOptions(definition.Children, selectedIndex, out selectedDefinition);
-        }
-
-        private static GUIContent[] ToOptions(IReadOnlyCollection<StateDefinition> definitions)
-        {
-            var enumerator = definitions.GetEnumerator();
-
-            GUIContent[] options = new GUIContent[definitions.Count];
-
-            for (int i = 0; i < definitions.Count; i++)
-            {
-                enumerator.MoveNext();
-                var child = enumerator.Current;
-                options[i] = new(child.Name);
-            }
-
-            return options;
-        }
         private static GUIContent[] ToOptions(IReadOnlyCollection<StateDefinition> definitions, int selectedIndex, out StateDefinition selectedDefinition)
         {
             selectedDefinition = null;

@@ -180,7 +180,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e69bfbcee7483b419635b7c520d6f12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: M320.StateMachines.Samples.PlayerController::M320.StateMachines.Samples.PlayerController.PlayerCore
-  m_initialLeafState: Idle
+  m_initialStateBranch:
+    _children: []
+    _selectedIndexes: 0100000000000000
   m_collider: {fileID: 5644638650455928242}
   m_rigidbody2D: {fileID: 678779692382374990}
   m_wonderMoveSpeed: 3

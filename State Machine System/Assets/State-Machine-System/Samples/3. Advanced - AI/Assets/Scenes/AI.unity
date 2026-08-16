@@ -1971,6 +1971,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: 'm_initialStateBranch._selectedIndexes.Array.data[0]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
       propertyPath: m_initialStateBranch._selection._indexes.Array.size
       value: 2
       objectReference: {fileID: 0}
