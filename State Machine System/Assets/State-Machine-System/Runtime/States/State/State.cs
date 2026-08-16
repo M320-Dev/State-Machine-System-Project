@@ -30,6 +30,7 @@ namespace M320.StateMachineSystem
 
         public StateParameters Parameters => Definition.parameters;
         public string Name => Parameters.name;
+        StateDefinition IStateIdentifier.Definition => Definition;
 
         #endregion
 

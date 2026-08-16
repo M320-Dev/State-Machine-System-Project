@@ -54,7 +54,7 @@ namespace M320.StateMachineSystem.Samples.PlayerController
 
         protected override PlayerCore Context => this;
 
-        protected override IEnumerable<StateDefinition> DefineStates()
+        protected override IEnumerable<StateDefinition> DefineChildren()
         {
             return new StateDefinition[] 
             {

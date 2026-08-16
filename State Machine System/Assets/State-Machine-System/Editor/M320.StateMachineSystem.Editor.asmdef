@@ -1,0 +1,18 @@
+{
+    "name": "M320.StateMachineSystem.Editor",
+    "rootNamespace": "M320.StateMachineSystem.Editor",
+    "references": [
+        "GUID:0e13911e977f8c6499a77ad0b9627b6a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

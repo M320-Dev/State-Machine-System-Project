@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +5,14 @@ namespace M320.StateMachineSystem
 {
     public abstract class StateMachineCore : MonoBehaviour
     {
-        [SerializeField] private string m_initialLeafState;
+        [SerializeField] private InitialStateBranch m_initialStateBranch;
 
-        protected readonly StateDictionary<State> StateDictionary = new();
-        protected StateDictionary<StateDefinition> StateDefinitionDictionary { get; private set; }
+/*        [Space(16)]
+
+        [SerializeField] private string m_initialLeafState;*/
+
+        protected readonly StateDictionary<State> Children = new();
+        protected StateDictionary<StateDefinition> ChildDefinitions { get; private set; }
 
         public event ChangeHandler<State> StateChanged;
 
@@ -17,8 +20,7 @@ namespace M320.StateMachineSystem
 
         protected abstract object ContextObject { get; }
 
-        public IReadOnlyCollection<StateDefinition> Definitions => StateDefinitionDictionary.States;
-        public IReadOnlyCollection<State> States => StateDictionary.States;
+        public IReadOnlyCollection<StateDefinition> ReadOnlyChildDefinitions => ChildDefinitions.States;
 
         protected StateMachine Machine { get; private set; }
         public State PreviousState => Machine?.PreviousState;
@@ -26,16 +28,10 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        #region Get State/Definition
+        #region Get Child/Definition
 
-        public State GetState(StateName name)
-        {
-            return StateDictionary[name];
-        }
-        public StateDefinition GetStateDefinition(StateName name)
-        {
-            return StateDefinitionDictionary[name];
-        }
+        public State GetChild(StateName name) => Children[name];
+        public StateDefinition GetChildDefinition(StateName name) => ChildDefinitions[name];
 
         #endregion
 
@@ -44,37 +40,87 @@ namespace M320.StateMachineSystem
         protected virtual void OnValidate() 
         {
             InitializeDefinitions();
+            DebugLogInitialBranchSelection();
         }
 
         protected virtual void Awake()
         {
-            State initialState = InitializeInstances();
+            InitializeDefinitions();
+            DebugLogInitialBranchSelection();
+
+            InitializeInstances();
+
+            var definitions = m_initialStateBranch.Selection.Definitions;
+            State initialState = Children[definitions[0]];
+
             Machine = new(initialState);
             Machine.StateChanged += (p, c) => StateChanged?.Invoke(p, c);
+        }
+
+        private void DebugLogInitialBranchSelection()
+        {
+            Debug.Log($"===== Initial Branch Selection =====");
+
+            for (int i = 0; i < m_initialStateBranch.Selection.Length; i++)
+            {
+                Debug.Log($"{m_initialStateBranch.Selection.Definitions[i].Name} | {m_initialStateBranch.Selection.Indexes[i]}");
+            }
+
+            Debug.Log($"====================================");
+        }
+        private void DebugLogChildren()
+        {
+            Debug.Log($"===== Children =====");
+
+            foreach (var state in Children.States)
+            {
+                Debug.Log(state.Name);
+            }
+
+            Debug.Log($"====================");
+        }
+
+        protected virtual void InitializeDefinitions()
+        {
+            if (ChildDefinitions != null) return;
+
+            ChildDefinitions = new();
+
+            StateInitializer.SetupChildren(DefineChildren(), ContextObject, ChildDefinitions);
+
+            m_initialStateBranch.Children = ChildrenArray();
+        }
+        protected abstract IEnumerable<StateDefinition> DefineChildren();
+        private StateDefinition[] ChildrenArray()
+        {
+            var states = ChildDefinitions.States;
+            var statesEnumerator = states.GetEnumerator();
+            var definitions = new StateDefinition[states.Count];
+            int i = 0;
+
+            while (statesEnumerator.MoveNext()) 
+            {
+                definitions[i] = statesEnumerator.Current;
+                i++;
+            }
+
+            return definitions;
         }
 
         /// <returns>
         /// Initial State
         /// </returns>
-        protected virtual State InitializeInstances() 
+        protected virtual void InitializeInstances() 
         {
-            StateInitializer.SetupInstances(Definitions, ContextObject, StateDictionary);
+            StateInitializer.SetupInstances(ChildDefinitions.States, ContextObject, Children);
+            DebugLogChildren();
+            StateInitializer.SetupInitialStateBranch(m_initialStateBranch, Children);
 
-            var (ancestryBranch, leaf) = GetInitialStateBranch();
-            StateInitializer.SetupInitialStateBranch(ancestryBranch, leaf);
+            //var (ancestryBranch, leaf) = GetInitialStateBranch();
+            //StateInitializer.SetupInitialStateBranch(ancestryBranch, leaf);
 
-            return ancestryBranch.Count > 0 ? ancestryBranch[0] : leaf;
+            //return ancestryBranch.Count > 0 ? ancestryBranch[0] : leaf;
         }
-
-        protected virtual void InitializeDefinitions()
-        {
-            if (StateDefinitionDictionary != null) return;
-
-            StateDefinitionDictionary = new();
-
-            StateInitializer.SetupDefinitions(DefineStates(), StateDefinitionDictionary);
-        }
-        protected abstract IEnumerable<StateDefinition> DefineStates();
 
         #endregion
 
@@ -102,7 +148,7 @@ namespace M320.StateMachineSystem
 
         public bool ChangeState(StateName stateName, bool forceChange = false)
         {
-            return ChangeState(StateDictionary[stateName], forceChange);
+            return ChangeState(Children[stateName], forceChange);
         }
         public bool ChangeState(State state, bool forceChange = false)
         {
@@ -111,11 +157,11 @@ namespace M320.StateMachineSystem
 
         #endregion
 
-        protected (List<HierarchicalState> ancestryBranch, State leaf) GetInitialStateBranch()
+        /*protected (List<HierarchicalState> ancestryBranch, State leaf) GetInitialStateBranch()
         {
             State foundState = null;
 
-            foreach (var state in States)
+            foreach (var state in Children.States)
             {
                 Helper(state);
             }
@@ -145,7 +191,7 @@ namespace M320.StateMachineSystem
                     Helper(_state);
                 }
             }
-        }
+        }*/
 
         public List<State> GetCurrentStateBranch()
         {

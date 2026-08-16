@@ -12,9 +12,9 @@ namespace M320.StateMachineSystem
 
         new public readonly TimedStateParameters Parameters;
 
-        public TimedState(StateDefinition definition) : base(definition) 
+        public TimedState(TimedStateDefinition definition) : base(definition) 
         {
-            Parameters = (TimedStateParameters)definition.parameters;
+            Parameters = definition.parameters;
         }
 
         public float Duration
@@ -54,7 +54,7 @@ namespace M320.StateMachineSystem
     {
         new protected TContext Context;
 
-        public TimedState(StateDefinition definition) : base(definition) { }
+        public TimedState(TimedStateDefinition definition) : base(definition) { }
 
         internal override void SetContext(object context)
         {

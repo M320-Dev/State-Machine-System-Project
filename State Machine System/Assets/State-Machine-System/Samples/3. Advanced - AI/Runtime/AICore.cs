@@ -97,12 +97,17 @@ namespace M320.StateMachineSystem.Samples.AI
             _targets = GameObject.FindGameObjectsWithTag("Target");
         }
 
-        protected override IEnumerable<StateDefinition> DefineStates()
+        protected override IEnumerable<StateDefinition> DefineChildren()
         {
             return new StateDefinition[] 
             {
-                StateDefinition.Create<State>(new(StateEnum.Wander)),
-                StateDefinition.Create<State>(new(StateEnum.Chase))
+                new WanderStateDefinition(
+                    new StateParameters(StateEnum.Wander)
+                    ),
+
+                new ChaseStateDefinition(
+                    new StateParameters(StateEnum.Chase)
+                    ),
             };
         }
 

@@ -7,7 +7,7 @@ namespace M320.StateMachineSystem
         #region Fields
 
         new public readonly HierarchicalStateDefinition Definition;
-        protected readonly StateDictionary<State> StateDictionary = new();
+        protected readonly StateDictionary<State> Children = new();
         protected readonly StateMachine Machine = new();
 
         #endregion
@@ -22,8 +22,8 @@ namespace M320.StateMachineSystem
 
         #region Properties
 
-        public IReadOnlyCollection<State> States => StateDictionary.States;
-        public IReadOnlyCollection<StateDefinition> Definitions => Definition.Definitions;
+        public IReadOnlyCollection<State> ChildStates => Children.States;
+        public IReadOnlyCollection<StateDefinition> ChildDefinitions => Definition.Children;
 
         public State PreviousState => Machine?.PreviousState;
         public State CurrentState => Machine?.CurrentState;
@@ -34,15 +34,27 @@ namespace M320.StateMachineSystem
 
         internal void SetupInstances() 
         {
-            StateInitializer.SetupInstances(Definition.Definitions, Context, StateDictionary, this);
+            StateInitializer.SetupInstances(ChildDefinitions, Context, Children, this);
         }
 
         #endregion
 
+        #region Set Initial State
+
+        public void SetInitialState(StateName name)
+        {
+            SetInitialState(Children[name]);
+        }
+        public void SetInitialState(StateDefinition definition)
+        {
+            SetInitialState(Children[definition]);
+        }
         public void SetInitialState(State initialState)
         {
             Machine.SetInitialState(initialState);
         }
+
+        #endregion
 
         public List<State> GetCurrentStateBranch() 
         {
@@ -68,7 +80,7 @@ namespace M320.StateMachineSystem
 
         public bool ChangeState(StateName stateName, bool forceChange = false)
         {
-            return ChangeState(StateDictionary[stateName], forceChange);
+            return ChangeState(Children[stateName], forceChange);
         }
         public bool ChangeState(State state, bool forceChange = false)
         {

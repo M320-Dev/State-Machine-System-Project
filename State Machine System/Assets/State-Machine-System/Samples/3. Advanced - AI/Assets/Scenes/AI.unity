@@ -1958,6 +1958,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: m_wonderMoveSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: m_initialStateBranches.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: m_initialStateBranch._selection._length
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: m_initialStateBranch._selection._indexes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: 'm_initialStateBranch._selection._indexes.Array.data[1]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: m_initialStateBranch._selection._definitions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: m_initialStateBranch._selection._definitions.Array.data[0].m_name
+      value: Wander
+      objectReference: {fileID: 0}
+    - target: {fileID: 5602780587991603061, guid: bc5bc4279ba833b4885530673fea1505, type: 3}
+      propertyPath: m_initialStateBranch._selection._definitions.Array.data[1].m_name
+      value: Move
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
