@@ -10,6 +10,7 @@ namespace M320.StateMachineSystem
 
         #region Events
 
+        public event Action Resetted;
         public event Action Entered;
         public event Action Exited;
         public event Action<float> Updated;
@@ -77,17 +78,31 @@ namespace M320.StateMachineSystem
             _context = context;
         }
 
-        #region Enter
+        #region Reset
 
-        protected virtual void OnReset() 
+        private void Reset()
         {
             StartTime = Time.time;
             ElapsedTime = 0f;
             FixedElapsedTime = 0;
+            if (this is IFinishableInternal finishable) finishable.SetIsFinished(false);
+
+            OnReset();
+
+            Resetted?.Invoke();
         }
+        protected virtual void OnReset()
+        {
+
+        }
+
+        #endregion
+
+        #region Enter
+
         internal void Enter()
         {
-            OnReset();
+            Reset();
 
             OnEnter();
 
@@ -101,6 +116,7 @@ namespace M320.StateMachineSystem
 
         internal virtual void Update(float deltaTime)
         {
+            if (this is ITimed timed) timed.TryFinish(UpdateMode.Update);
             ElapsedTime += deltaTime;
 
             OnUpdate(deltaTime);
@@ -109,6 +125,7 @@ namespace M320.StateMachineSystem
         }
         internal virtual void FixedUpdate(float fixedDeltaTime)
         {
+            if (this is ITimed timed) timed.TryFinish(UpdateMode.FixedUpdate);
             FixedElapsedTime += fixedDeltaTime;
 
             OnFixedUpdate(fixedDeltaTime);
