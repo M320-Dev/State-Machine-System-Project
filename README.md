@@ -9,6 +9,7 @@ A framework for implementing state-driven behaviours.
 - Event-driven architecture
 - Context-based states
 - Custom `State` creation
+- Finishable states
 - Timed states
 - Hierarchical states
 - Custom `StateMachine` implementations
