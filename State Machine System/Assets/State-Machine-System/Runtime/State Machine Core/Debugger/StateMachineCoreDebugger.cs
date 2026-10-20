@@ -1,5 +1,3 @@
-#if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
 
@@ -25,5 +23,3 @@ namespace M320.StateMachineSystem
         }
     }
 }
-
-#endif
