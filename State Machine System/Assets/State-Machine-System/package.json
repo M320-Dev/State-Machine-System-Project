@@ -1,6 +1,6 @@
 {
   "name": "com.m320.state-machine-system",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "State Machine System",
   "description": "A framework for implementing state-driven behaviours.",
   "author": {
